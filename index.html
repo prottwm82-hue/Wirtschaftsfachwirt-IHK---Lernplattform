@@ -1,0 +1,3393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="dashboard">
+  <meta name="design-style" content="handbook">
+  <title>IHK Wirtschaftsfachwirt — Interaktive Lernplattform & Prüfungskompass</title>
+
+  <!-- Google Fonts: Public Sans (Handbook Style) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons via allowed CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.2/src/bold/style.css">
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces */
+      --background: #ffffff;
+      --surface-container-low: #f3f2f1;
+      --surface-container: #e8e7e5;
+      --surface-container-high: #dbdad9;
+
+      /* Ink */
+      --on-surface: #0b0c0c;
+      --on-surface-variant: #505a5f;
+
+      /* Rules */
+      --outline: #0b0c0c;
+      --outline-variant: #b1b4b6;
+
+      /* Accents */
+      --primary: #162e51;
+      --on-primary: #ffffff;
+      --primary-container: #d2e2f1;
+      --on-primary-container: #0c2d4a;
+      --secondary: #4c2c92;
+      --tertiary: #1a569e;
+      --error: #d4351c;
+      --on-error: #ffffff;
+
+      /* Semantic */
+      --positive: #00703c;
+      --on-positive: #ffffff;
+      --positive-container: #d4ebd7;
+      --on-positive-container: #004d25;
+      --warning: #a34800;
+      --warning-container: #fef0da;
+      --on-warning-container: #592400;
+
+      /* Data series */
+      --data-1: #1a569e;
+      --data-2: #c75a0a;
+      --data-3: #28a197;
+      --data-4: #4c2c92;
+      --data-context: #b1b4b6;
+
+      /* Fonts */
+      --font-headline: 'Public Sans', sans-serif;
+      --font-body: 'Public Sans', sans-serif;
+      --font-label: 'Public Sans', sans-serif;
+
+      /* Shape */
+      --rounded: 0px;
+      --rounded-lg: 0px;
+      --rounded-full: 0px;
+
+      /* Style effects */
+      --top-index-rule: 6px solid var(--primary);
+      --inset-rule: 5px solid var(--tertiary);
+      --inset-rule-warning: 5px solid var(--warning);
+      --inset-rule-positive: 5px solid var(--positive);
+      --inset-rule-error: 5px solid var(--error);
+      --button-ground: 0 2px 0 #091526;
+      --button-ground-secondary: 0 2px 0 #858686;
+      --focus-yellow: #ffdd00;
+      --focus-ring: 3px solid var(--focus-yellow);
+      --focus-bar: inset 0 0 0 2px var(--on-surface);
+      --focus-underline: 0 -2px var(--focus-yellow), 0 4px var(--on-surface);
+      --focus: #162e51;
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Type scale */
+      --display-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+      --headline-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      --subhead-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+      --body-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+      --label-size: 0.75rem;
+
+      /* Transitions */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.55;
+      overflow-x: clip;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top index rule from Handbook style */
+    body {
+      border-top: var(--top-index-rule);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 1px;
+      box-shadow: var(--focus-bar);
+    }
+
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-family: var(--font-headline);
+      color: var(--on-surface);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: var(--display-size);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: var(--headline-size);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: var(--subhead-size);
+    }
+
+    p {
+      max-width: 75ch;
+    }
+
+    .label-caps {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-surface-variant);
+    }
+
+    /* Layout Containers */
+    .site-wrapper {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-md) var(--space-3xl);
+      flex: 1;
+    }
+
+    /* Header & Masthead */
+    .masthead {
+      border-bottom: 2px solid var(--outline);
+      padding-bottom: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: center;
+      margin-bottom: var(--space-sm);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border: 1px solid var(--outline);
+      background-color: var(--background);
+      color: var(--on-surface);
+    }
+
+    .badge-primary {
+      background-color: var(--primary-container);
+      color: var(--on-primary-container);
+      border-color: var(--tertiary);
+    }
+
+    .badge-success {
+      background-color: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--positive);
+    }
+
+    .badge-navy {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .header-content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-lg);
+      align-items: end;
+      margin-top: var(--space-sm);
+    }
+
+    .header-text p {
+      margin-top: var(--space-xs);
+      color: var(--on-surface-variant);
+      font-size: var(--subhead-size);
+    }
+
+    /* Key Metrics Strip */
+    .metrics-ribbon {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+      background-color: var(--surface-container-low);
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-md);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      border-left: 3px solid var(--primary);
+      padding-left: var(--space-sm);
+    }
+
+    .metric-value {
+      font-family: var(--font-headline);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      color: var(--on-surface-variant);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: var(--space-xs);
+    }
+
+    /* Study Progress Tracker Bar */
+    .progress-banner {
+      margin-top: var(--space-md);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-md);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-md);
+    }
+
+    .progress-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .progress-title {
+      font-weight: 700;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .progress-detail {
+      font-size: var(--label-size);
+      color: var(--primary-container);
+    }
+
+    .progress-bar-container {
+      flex: 1;
+      min-width: 200px;
+      max-width: 380px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .progress-bar-bg {
+      flex: 1;
+      height: 12px;
+      background-color: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--focus-yellow);
+      width: 0%;
+      transition: width var(--dur-short) var(--ease-out);
+    }
+
+    .progress-pct {
+      font-weight: 800;
+      font-size: 0.95rem;
+      min-width: 45px;
+      text-align: right;
+    }
+
+    /* Tab Navigation */
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--outline);
+      margin-bottom: var(--space-lg);
+      gap: 2px;
+    }
+
+    .tab-btn {
+      appearance: none;
+      border: none;
+      background-color: var(--surface-container-low);
+      color: var(--on-surface);
+      font-family: var(--font-headline);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: var(--space-md) var(--space-lg);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      position: relative;
+      border-top: 3px solid transparent;
+      transition: background-color var(--dur-micro) ease;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--surface-container);
+    }
+
+    .tab-btn.active {
+      background-color: var(--background);
+      color: var(--primary);
+      border: 2px solid var(--outline);
+      border-bottom: 2px solid var(--background);
+      border-top: 4px solid var(--primary);
+      margin-bottom: -2px;
+      z-index: 2;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Common Card & Callout Components */
+    .card {
+      border: 1px solid var(--outline-variant);
+      background-color: var(--background);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+    }
+
+    .card-ruled {
+      border: 2px solid var(--outline);
+    }
+
+    .callout {
+      border-left: var(--inset-rule);
+      background-color: var(--surface-container-low);
+      padding: var(--space-md) var(--space-lg);
+      margin-bottom: var(--space-md);
+    }
+
+    .callout-title {
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-xs);
+    }
+
+    .callout-warning {
+      border-left: var(--inset-rule-warning);
+      background-color: var(--warning-container);
+      color: var(--on-warning-container);
+    }
+
+    .callout-warning .callout-title {
+      color: var(--warning);
+    }
+
+    .callout-positive {
+      border-left: var(--inset-rule-positive);
+      background-color: var(--positive-container);
+      color: var(--on-positive-container);
+    }
+
+    .callout-positive .callout-title {
+      color: var(--positive);
+    }
+
+    .callout-error {
+      border-left: var(--inset-rule-error);
+      background-color: #fdf2f2;
+      color: var(--error);
+    }
+
+    /* Buttons */
+    .btn {
+      appearance: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      font-family: var(--font-headline);
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: var(--space-sm) var(--space-md);
+      cursor: pointer;
+      border: 2px solid var(--primary);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--button-ground);
+      min-height: 44px;
+      text-decoration: none;
+      transition: transform var(--dur-micro) ease, box-shadow var(--dur-micro) ease;
+    }
+
+    .btn:hover {
+      background-color: #0d1e35;
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background-color: var(--surface-container-low);
+      color: var(--on-surface);
+      border-color: var(--outline);
+      box-shadow: var(--button-ground-secondary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--surface-container);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(2px);
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--outline-variant);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--surface-container-low);
+      border-color: var(--outline);
+    }
+
+    .btn-sm {
+      min-height: 36px;
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 0.825rem;
+    }
+
+    /* Number Step Badges */
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background-color: var(--primary);
+      color: var(--on-primary);
+      font-weight: 800;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    /* TAB 1: CURRICULUM EXPLORER */
+    .curriculum-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--surface-container-low);
+      padding: var(--space-md);
+      border: 1px solid var(--outline-variant);
+      margin-bottom: var(--space-lg);
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .pill-btn {
+      appearance: none;
+      border: 1px solid var(--outline-variant);
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding: var(--space-xs) var(--space-sm);
+      cursor: pointer;
+      min-height: 34px;
+    }
+
+    .pill-btn.active {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    .search-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      min-width: 260px;
+    }
+
+    .text-input {
+      width: 100%;
+      height: 40px;
+      padding: var(--space-xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      border: 2px solid var(--outline);
+      background-color: var(--background);
+      color: var(--on-surface);
+    }
+
+    .text-input:focus-visible {
+      outline: var(--focus-ring);
+      box-shadow: var(--focus-bar);
+    }
+
+    .exam-part-header {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-md);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .exam-part-header h3 {
+      color: var(--on-primary);
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .subject-block {
+      border: 2px solid var(--outline);
+      margin-bottom: var(--space-lg);
+      background-color: var(--background);
+    }
+
+    .subject-header {
+      background-color: var(--surface-container-low);
+      border-bottom: 1px solid var(--outline);
+      padding: var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    .subject-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .topic-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topic-item {
+      border-bottom: 1px solid var(--outline-variant);
+      padding: var(--space-md);
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: var(--space-md);
+      align-items: flex-start;
+      transition: background-color var(--dur-micro) ease;
+    }
+
+    .topic-item:last-child {
+      border-bottom: none;
+    }
+
+    .topic-item:hover {
+      background-color: rgba(243, 242, 241, 0.4);
+    }
+
+    .topic-item.completed {
+      background-color: #f7faf7;
+    }
+
+    .topic-item.completed .topic-name {
+      text-decoration: line-through;
+      color: var(--on-surface-variant);
+    }
+
+    .topic-checkbox-wrap {
+      padding-top: 2px;
+    }
+
+    .topic-checkbox {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--positive);
+      cursor: pointer;
+    }
+
+    .topic-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .topic-header-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .topic-code {
+      font-family: var(--font-label);
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--tertiary);
+    }
+
+    .topic-name {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .topic-summary {
+      font-size: 0.9rem;
+      color: var(--on-surface-variant);
+    }
+
+    .topic-laws-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-top: var(--space-xs);
+    }
+
+    .tag-law {
+      font-family: var(--font-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: var(--surface-container);
+      color: var(--on-surface);
+      padding: 1px 6px;
+      border: 1px solid var(--outline-variant);
+    }
+
+    .topic-expand-btn {
+      appearance: none;
+      background: none;
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .topic-drawer {
+      display: none;
+      grid-column: 2 / -1;
+      margin-top: var(--space-sm);
+      padding: var(--space-md);
+      background-color: var(--surface-container-low);
+      border-left: 3px solid var(--tertiary);
+      font-size: 0.9rem;
+    }
+
+    .topic-drawer.open {
+      display: block;
+    }
+
+    /* TAB 2: QUIZ COMPONENT */
+    .quiz-container {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: var(--space-lg);
+      align-items: flex-start;
+    }
+
+    .quiz-sidebar {
+      border: 2px solid var(--outline);
+      background-color: var(--background);
+      padding: var(--space-md);
+    }
+
+    .quiz-progress-stats {
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .quiz-q-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xs);
+      margin-top: var(--space-sm);
+    }
+
+    .quiz-nav-btn {
+      aspect-ratio: 1;
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 1px solid var(--outline-variant);
+      background-color: var(--surface-container-low);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quiz-nav-btn.active {
+      outline: 2px solid var(--primary);
+      border-color: var(--primary);
+      font-weight: 800;
+    }
+
+    .quiz-nav-btn.correct {
+      background-color: var(--positive-container);
+      color: var(--on-positive-container);
+      border-color: var(--positive);
+    }
+
+    .quiz-nav-btn.incorrect {
+      background-color: #fce8e6;
+      color: var(--error);
+      border-color: var(--error);
+    }
+
+    .quiz-card {
+      border: 2px solid var(--outline);
+      background-color: var(--background);
+      padding: var(--space-xl);
+    }
+
+    .quiz-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-md);
+    }
+
+    .quiz-scenario {
+      background-color: var(--surface-container-low);
+      border-left: 4px solid var(--primary);
+      padding: var(--space-md);
+      margin-bottom: var(--space-md);
+      font-size: 0.95rem;
+    }
+
+    .quiz-question-text {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: var(--space-lg);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    .quiz-option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      border: 1px solid var(--outline-variant);
+      cursor: pointer;
+      background-color: var(--background);
+      transition: background-color var(--dur-micro) ease;
+    }
+
+    .quiz-option-label:hover {
+      background-color: var(--surface-container-low);
+      border-color: var(--outline);
+    }
+
+    .quiz-option-label input[type="radio"] {
+      margin-top: 4px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    .quiz-option-label.correct-answer {
+      background-color: var(--positive-container);
+      border: 2px solid var(--positive);
+      color: var(--on-positive-container);
+      font-weight: 600;
+    }
+
+    .quiz-option-label.wrong-answer {
+      background-color: #fce8e6;
+      border: 2px solid var(--error);
+      color: var(--error);
+    }
+
+    .quiz-feedback {
+      display: none;
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      border-left: 5px solid var(--tertiary);
+      background-color: var(--surface-container-low);
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px solid var(--outline-variant);
+    }
+
+    /* TAB 3: CALCULATORS */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-xl);
+    }
+
+    .form-group {
+      margin-bottom: var(--space-md);
+    }
+
+    .form-label {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-xs);
+    }
+
+    .calc-input-row {
+      display: grid;
+      grid-template-columns: 1fr 90px;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+
+    .range-slider {
+      width: 100%;
+      height: 8px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .num-input {
+      width: 100%;
+      height: 40px;
+      padding: var(--space-xs) var(--space-sm);
+      border: 2px solid var(--outline);
+      font-family: var(--font-headline);
+      font-size: 1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .calc-summary-card {
+      background-color: var(--surface-container-low);
+      border: 2px solid var(--outline);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    .calc-score-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-sm) 0;
+      border-bottom: 1px solid var(--outline-variant);
+    }
+
+    .calc-score-display:last-child {
+      border-bottom: none;
+    }
+
+    .grade-badge-huge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-sm) var(--space-md);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      font-weight: 800;
+      font-size: 1.5rem;
+      min-width: 90px;
+    }
+
+    .grade-badge-huge small {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Supplementary Oral Exam Box */
+    .erg-box {
+      border: 2px dashed var(--warning);
+      background-color: var(--warning-container);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+    }
+
+    /* Overall Summary Table */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--space-md);
+      font-size: 0.9rem;
+    }
+
+    .summary-table th, .summary-table td {
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-xs) var(--space-sm);
+      text-align: left;
+    }
+
+    .summary-table th {
+      background-color: var(--surface-container);
+      font-family: var(--font-label);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+
+    /* TAB 4: EXAM GUIDE & METHODOLOGY */
+    .guide-step-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .step-card {
+      border: 2px solid var(--outline);
+      background-color: var(--background);
+      padding: var(--space-md);
+      position: relative;
+    }
+
+    .step-card .step-number {
+      position: absolute;
+      top: -14px;
+      left: var(--space-md);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 2px 10px;
+    }
+
+    /* Flipchart Visual Mockup */
+    .flipchart-container {
+      background-color: #fefefe;
+      border: 3px solid #333333;
+      box-shadow: 4px 6px 0 rgba(0,0,0,0.15);
+      padding: var(--space-lg);
+      max-width: 600px;
+      margin: var(--space-md) auto;
+      position: relative;
+      font-family: var(--font-body);
+    }
+
+    .flipchart-header {
+      border-bottom: 2px solid var(--error);
+      padding-bottom: var(--space-xs);
+      margin-bottom: var(--space-md);
+      color: var(--primary);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .flipchart-cards-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .fc-card {
+      border: 1px solid var(--outline-variant);
+      padding: var(--space-xs) var(--space-sm);
+      font-size: 0.85rem;
+      background-color: #fffae0;
+      box-shadow: 1px 2px 3px rgba(0,0,0,0.08);
+    }
+
+    .fc-card-blue {
+      background-color: #e3f2fd;
+    }
+
+    .fc-card-green {
+      background-color: #e8f5e9;
+    }
+
+    /* TAB 5: CHECKLIST */
+    .checklist-wrapper {
+      max-width: 800px;
+    }
+
+    .checklist-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: var(--space-md);
+      align-items: flex-start;
+      padding: var(--space-md);
+      border: 1px solid var(--outline-variant);
+      background-color: var(--background);
+      margin-bottom: var(--space-xs);
+      transition: background-color var(--dur-micro) ease;
+    }
+
+    .checklist-item:hover {
+      background-color: var(--surface-container-low);
+    }
+
+    .checklist-item.done {
+      background-color: #f4fbf5;
+      border-color: #bde5c8;
+    }
+
+    .checklist-item.done .checklist-text h4 {
+      text-decoration: line-through;
+      color: var(--on-surface-variant);
+    }
+
+    .checklist-check {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--positive);
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .checklist-text h4 {
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .checklist-text p {
+      font-size: 0.875rem;
+      color: var(--on-surface-variant);
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 860px) {
+      .header-content {
+        grid-template-columns: 1fr;
+      }
+      .quiz-container {
+        grid-template-columns: 1fr;
+      }
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+      .site-wrapper {
+        padding: var(--space-sm) var(--space-sm) var(--space-2xl);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-tabs {
+        flex-direction: column;
+        border-bottom: none;
+      }
+      .tab-btn {
+        width: 100%;
+        border: 1px solid var(--outline-variant);
+      }
+      .tab-btn.active {
+        border: 2px solid var(--outline);
+        border-left: 6px solid var(--primary);
+        margin-bottom: 0;
+      }
+      .topic-item {
+        grid-template-columns: auto 1fr;
+      }
+      .topic-expand-btn {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="site-wrapper">
+
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="badge-bar">
+        <span class="badge badge-navy"><i class="ph ph-certificate" aria-hidden="true"></i> DQR Niveau 6</span>
+        <span class="badge badge-primary"><i class="ph ph-scales" aria-hidden="true"></i> BBiG Fortbildungsordnung</span>
+        <span class="badge"><i class="ph ph-books" aria-hidden="true"></i> DIHK-Rahmenstoffplan</span>
+        <span class="badge badge-success"><i class="ph ph-check-circle" aria-hidden="true"></i> Offizielle Prüfungsstandards</span>
+      </div>
+
+      <div class="header-content">
+        <div class="header-text">
+          <h1>IHK Wirtschaftsfachwirt (Bachelor Professional)</h1>
+          <p>Interaktive Lernplattform, Lehrplan-Explorer, Bestehens-Simulator & Prüfungskompass für WBQ und HSQ.</p>
+        </div>
+        <div>
+          <button class="btn btn-secondary btn-sm" id="btnExportNotes" onclick="exportStudyStatus()" aria-label="Lernstand als Textdatei exportieren">
+            <i class="ph ph-download-simple" aria-hidden="true"></i> Lernstand exportieren
+          </button>
+        </div>
+      </div>
+
+      <!-- Key Metrics Strip -->
+      <div class="metrics-ribbon" role="region" aria-label="Wichtige Kennzahlen zur IHK-Prüfung">
+        <div class="metric-item">
+          <span class="metric-value">2 Stufen</span>
+          <span class="metric-label">WBQ & HSQ Teilprüfungen</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">9 Bereiche</span>
+          <span class="metric-label">Handlungs- & Fachbereiche</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">2 x 240 Min.</span>
+          <span class="metric-label">Schriftliche Situationsaufgaben</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">30 + 30 Min.</span>
+          <span class="metric-label">Vorbereitung + Mündl. Fachgespräch</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-value">ca. 65 %</span>
+          <span class="metric-label">Bundesweite Bestehensquote</span>
+        </div>
+      </div>
+
+      <!-- Real-Time Progress Banner -->
+      <div class="progress-banner" role="status" aria-live="polite">
+        <div class="progress-info">
+          <span class="progress-title">
+            <i class="ph-bold ph-graduation-cap" aria-hidden="true"></i>
+            Persönlicher Vorbereitungsstand
+          </span>
+          <span class="progress-detail" id="progressDetailText">
+            0 von 40 Rahmenplan-Themen beherrscht
+          </span>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-bg" aria-hidden="true">
+            <div class="progress-bar-fill" id="globalProgressBar"></div>
+          </div>
+          <span class="progress-pct" id="globalProgressPct">0%</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Tab Navigation -->
+    <nav class="nav-tabs" role="tablist" aria-label="Hauptnavigation Lernplattform">
+      <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-curriculum" id="tab-curriculum" onclick="switchTab('curriculum')">
+        <i class="ph ph-tree-structure" aria-hidden="true"></i> 1. Lehrplan-Explorer (WBQ & HSQ)
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-quiz" id="tab-quiz" onclick="switchTab('quiz')">
+        <i class="ph ph-checks" aria-hidden="true"></i> 2. Klausur-Quiz & Fallprüfungen
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-calculator" id="tab-calculator" onclick="switchTab('calculator')">
+        <i class="ph ph-calculator" aria-hidden="true"></i> 3. IHK-Notenrechner & Ergänzungsprüfung
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-oral" id="tab-oral" onclick="switchTab('oral')">
+        <i class="ph ph-presentation" aria-hidden="true"></i> 4. Mündliche Prüfung & Methodik
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-checklist" id="tab-checklist" onclick="switchTab('checklist')">
+        <i class="ph ph-list-checks" aria-hidden="true"></i> 5. Prüfungs-Checkliste
+      </button>
+    </nav>
+
+    <!-- TAB 1: RAHMENLEHRPLAN EXPLORER -->
+    <main>
+      <section class="tab-panel active" id="panel-curriculum" role="tabpanel" aria-labelledby="tab-curriculum">
+        <div class="section-head">
+          <div>
+            <h2>Offizieller DIHK-Rahmenstoffplan</h2>
+            <p>Systematische Aufschlüsselung aller 9 Qualifikations- und Handlungsbereiche. Haken Sie bearbeitete Themen ab, um Ihren Lernfortschritt zu sichern.</p>
+          </div>
+          <div class="badge-bar">
+            <span class="badge"><span id="countVisibleTopics">40</span> Themen angezeigt</span>
+            <span class="badge badge-success"><span id="countDoneTopics">0</span> erledigt</span>
+          </div>
+        </div>
+
+        <!-- Filter and Search Bar -->
+        <div class="curriculum-controls">
+          <div class="filter-pills" role="group" aria-label="Themenbereich filtern">
+            <button class="pill-btn active" id="filter-all" onclick="filterCurriculum('all')">Alle Handlungsbereiche (9)</button>
+            <button class="pill-btn" id="filter-wbq" onclick="filterCurriculum('wbq')">Teil 1: WBQ (4 Fächer)</button>
+            <button class="pill-btn" id="filter-hsq" onclick="filterCurriculum('hsq')">Teil 2: HSQ (5 Fächer)</button>
+            <button class="pill-btn" id="filter-open" onclick="filterCurriculum('open')">Nur offene Themen</button>
+          </div>
+
+          <div class="search-input-wrap">
+            <label for="curriculumSearch" class="label-caps" style="display:none;">Stichwort suchen</label>
+            <input type="text" id="curriculumSearch" class="text-input" placeholder="Stichwort (z.B. Prokura, Break-Even, BCG)..." oninput="searchCurriculum(this.value)">
+            <button class="btn btn-secondary btn-sm" onclick="clearCurriculumSearch()" title="Suche zurücksetzen">
+              <i class="ph ph-x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Curriculum Container populated by JS -->
+        <div id="curriculumList">
+          <!-- Content injected dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 2: QUIZ & WISSENS-CHECK -->
+      <section class="tab-panel" id="panel-quiz" role="tabpanel" aria-labelledby="tab-quiz">
+        <div class="section-head">
+          <div>
+            <h2>Klausur-Quiz & Situations-Trainingsaufgaben</h2>
+            <p>Testen Sie Ihr Prüfungswissen anhand authentischer IHK-Fallgestaltungen für WBQ und HSQ. Mit direkter Auswertung, Gesetzeshinweisen und Prüfungstipps.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="resetQuiz()">
+            <i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i> Quiz zurücksetzen
+          </button>
+        </div>
+
+        <div class="quiz-container">
+          <!-- Quiz Navigation & Stats Sidebar -->
+          <aside class="quiz-sidebar">
+            <div class="quiz-progress-stats">
+              <span class="label-caps">Trainings-Status</span>
+              <div style="font-size: 1.25rem; font-weight: 800; margin-top: 4px;">
+                <span id="quizScoreCorrect">0</span> / <span id="quizTotalCount">12</span> richtig
+              </div>
+              <p style="font-size: 0.8rem; color: var(--on-surface-variant); margin-top: 2px;">
+                Erfolgsquote: <strong id="quizSuccessRate">0%</strong>
+              </p>
+            </div>
+
+            <div style="margin-top: var(--space-md);">
+              <span class="label-caps">Aufgaben-Übersicht</span>
+              <div class="quiz-q-nav" id="quizNavGrid">
+                <!-- 12 buttons generated by JS -->
+              </div>
+            </div>
+
+            <div class="callout" style="margin-top: var(--space-lg); font-size: 0.825rem; padding: var(--space-sm);">
+              <strong>IHK-Klausurtipp:</strong> Lesen Sie immer zuerst die exakte Fragestellung am Ende des Textes, bevor Sie den Sachverhalt analysieren. Das spart wertvolle Minuten!
+            </div>
+          </aside>
+
+          <!-- Main Quiz Interactive Card -->
+          <article class="quiz-card" id="quizCard">
+            <div class="quiz-meta">
+              <span class="badge badge-navy" id="quizBadgeDomain">WBQ: Recht & Steuern</span>
+              <span class="badge" id="quizBadgeTime">75 Min. Fach</span>
+              <span class="label-caps" id="quizQuestionCounter">Frage 1 von 12</span>
+            </div>
+
+            <div class="quiz-scenario" id="quizScenarioBox">
+              <!-- Scenario text -->
+            </div>
+
+            <h3 class="quiz-question-text" id="quizQuestionTitle">
+              <!-- Question title -->
+            </h3>
+
+            <form class="quiz-options" id="quizOptionsForm">
+              <!-- Radio options -->
+            </form>
+
+            <div class="quiz-feedback" id="quizFeedbackBox" role="region" aria-label="Erklärung zur Antwort">
+              <!-- Solution and paragraphs -->
+            </div>
+
+            <div class="quiz-actions">
+              <button class="btn btn-secondary" id="btnPrevQuiz" onclick="prevQuizQuestion()">
+                <i class="ph ph-arrow-left" aria-hidden="true"></i> Vorherige
+              </button>
+              <div style="display: flex; gap: var(--space-sm);">
+                <button class="btn" id="btnSubmitQuiz" onclick="submitQuizAnswer()">
+                  <i class="ph ph-check" aria-hidden="true"></i> Antwort prüfen
+                </button>
+                <button class="btn btn-secondary" id="btnNextQuiz" onclick="nextQuizQuestion()">
+                  Nächste <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- TAB 3: NOTENRECHNER & ERGÄNZUNGSPRÜFUNG -->
+      <section class="tab-panel" id="panel-calculator" role="tabpanel" aria-labelledby="tab-calculator">
+        <div class="section-head">
+          <div>
+            <h2>IHK-Notenrechner & Bestehenssimulator</h2>
+            <p>Berechnen Sie die Bestehensgrenzen nach der offiziellen Fortbildungsordnung: Prüfung der 50-Punkte-Hürde, Simulation der mündlichen Ergänzungsprüfung und Ermittlung der HQ-Gesamtnote.</p>
+          </div>
+          <div class="badge-bar">
+            <button class="btn btn-outline btn-sm" onclick="loadCalcPreset('pass_good')">Preset: Solide Bestanden (Gut)</button>
+            <button class="btn btn-outline btn-sm" onclick="loadCalcPreset('erg_needed')">Preset: 1x Mangelhaft (Ergänzung nötig)</button>
+            <button class="btn btn-outline btn-sm" onclick="loadCalcPreset('failed_double')">Preset: 2x Mangelhaft (Durchgefallen)</button>
+          </div>
+        </div>
+
+        <div class="calc-grid">
+          <!-- Teil 1: WBQ Rechner -->
+          <div class="card card-ruled">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-md); border-bottom: 2px solid var(--primary); padding-bottom: var(--space-xs);">
+              <h3>1. Teil: Wirtschaftsbezogene Qualifikationen (WBQ)</h3>
+              <span class="badge badge-primary">Gewichtung: 25% Gesamtnote</span>
+            </div>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-md);">
+              Bestehensregel: In <strong>allen 4 Fächern</strong> müssen mindestens <strong>50 Punkte</strong> erzielt werden. Eine mündliche Ergänzungsprüfung ist nur bei genau <strong>einem</strong> Fach mit 30–49 Punkten zulässig!
+            </p>
+
+            <!-- Fach 1: VWL/BWL -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputVwl">1. Volks- und Betriebswirtschaft (75 Min.)</label>
+                <span id="labelValVwl" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">70 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputVwl" class="range-slider" min="0" max="100" value="70" oninput="syncCalcInput('vwl', this.value)">
+                <input type="number" id="numVwl" class="num-input" min="0" max="100" value="70" oninput="syncCalcInput('vwl', this.value)">
+              </div>
+            </div>
+
+            <!-- Fach 2: Rechnungswesen -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputRewe">2. Rechnungswesen (90 Min.)</label>
+                <span id="labelValRewe" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">65 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputRewe" class="range-slider" min="0" max="100" value="65" oninput="syncCalcInput('rewe', this.value)">
+                <input type="number" id="numRewe" class="num-input" min="0" max="100" value="65" oninput="syncCalcInput('rewe', this.value)">
+              </div>
+            </div>
+
+            <!-- Fach 3: Recht und Steuern -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputRecht">3. Recht und Steuern (75 Min.)</label>
+                <span id="labelValRecht" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">58 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputRecht" class="range-slider" min="0" max="100" value="58" oninput="syncCalcInput('recht', this.value)">
+                <input type="number" id="numRecht" class="num-input" min="0" max="100" value="58" oninput="syncCalcInput('recht', this.value)">
+              </div>
+            </div>
+
+            <!-- Fach 4: Unternehmensführung -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputUf">4. Unternehmensführung (90 Min.)</label>
+                <span id="labelValUf" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">74 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputUf" class="range-slider" min="0" max="100" value="74" oninput="syncCalcInput('uf', this.value)">
+                <input type="number" id="numUf" class="num-input" min="0" max="100" value="74" oninput="syncCalcInput('uf', this.value)">
+              </div>
+            </div>
+
+            <!-- WBQ Zwischenergebnis & Status -->
+            <div class="calc-summary-card" id="wbqStatusBox">
+              <!-- Dynamically populated -->
+            </div>
+
+            <!-- Mündliche Ergänzungsprüfung Container (Show if exactly one subject is 30-49) -->
+            <div class="erg-box" id="ergBox" style="display: none;">
+              <h4 style="color: var(--warning); display: flex; align-items: center; gap: var(--space-xs); margin-bottom: var(--space-xs);">
+                <i class="ph-bold ph-warning" aria-hidden="true"></i> Mündliche Ergänzungsprüfung erforderlich!
+              </h4>
+              <p style="font-size: 0.85rem; margin-bottom: var(--space-sm);">
+                Sie haben in genau einem Fach zwischen 30 und 49 Punkten erzielt. Schriftlich zählt 2-fach, mündlich 1-fach:
+                <strong>Endnote = (2 × Schriftlich + Mündlich) ÷ 3</strong>.
+              </p>
+              <div class="form-group" style="margin-bottom: var(--space-xs);">
+                <div class="form-label">
+                  <label for="inputErgOral">Simuliertes mündliches Ergänzungsergebnis (ca. 15 Min.)</label>
+                  <span id="labelValErgOral" style="font-weight: 800; color: var(--tertiary);">65 Punkte</span>
+                </div>
+                <div class="calc-input-row">
+                  <input type="range" id="inputErgOral" class="range-slider" min="0" max="100" value="65" oninput="syncErgInput(this.value)">
+                  <input type="number" id="numErgOral" class="num-input" min="0" max="100" value="65" oninput="syncErgInput(this.value)">
+                </div>
+              </div>
+              <div id="ergResultOutcome" style="font-size: 0.9rem; font-weight: 700; margin-top: var(--space-xs);">
+                <!-- Dynamic calculation feedback -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Teil 2: HSQ Rechner & Gesamtabschluss -->
+          <div class="card card-ruled">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-md); border-bottom: 2px solid var(--primary); padding-bottom: var(--space-xs);">
+              <h3>2. Teil: Handlungsspezifische Qualifikationen (HSQ)</h3>
+              <span class="badge badge-navy">Gewichtung: 75% Gesamtnote</span>
+            </div>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-md);">
+              HSQ besteht aus zwei schriftlichen 240-Minuten-Situationsaufgaben (50% Gesamtnote) und dem mündlichen Fachgespräch mit Präsentation (25% Gesamtnote).
+            </p>
+
+            <!-- HSQ Tag 1 -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputHsqSa1">Situationsaufgabe 1 (Tag 1 – 240 Min.)</label>
+                <span id="labelValHsqSa1" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">72 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputHsqSa1" class="range-slider" min="0" max="100" value="72" oninput="syncCalcInput('sa1', this.value)">
+                <input type="number" id="numHsqSa1" class="num-input" min="0" max="100" value="72" oninput="syncCalcInput('sa1', this.value)">
+              </div>
+              <small style="color: var(--on-surface-variant); font-size: 0.75rem;">Bereiche: Betr. Management, Marketing/Vertrieb, Führung & Zusammenarbeit</small>
+            </div>
+
+            <!-- HSQ Tag 2 -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputHsqSa2">Situationsaufgabe 2 (Tag 2 – 240 Min.)</label>
+                <span id="labelValHsqSa2" style="font-family: var(--font-headline); font-weight: 800; color: var(--primary);">68 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputHsqSa2" class="range-slider" min="0" max="100" value="68" oninput="syncCalcInput('sa2', this.value)">
+                <input type="number" id="numHsqSa2" class="num-input" min="0" max="100" value="68" oninput="syncCalcInput('sa2', this.value)">
+              </div>
+              <small style="color: var(--on-surface-variant); font-size: 0.75rem;">Bereiche: Investition/Finanzierung/KLR, Logistik, Marketing/Vertrieb</small>
+            </div>
+
+            <!-- Mündliche Prüfung: Präsentation (1/3) -->
+            <div class="form-group" style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 1px dashed var(--outline-variant);">
+              <div class="form-label">
+                <label for="inputHsqPres">Mündliche Präsentation (10 Min. – 1/3 mündl.)</label>
+                <span id="labelValHsqPres" style="font-family: var(--font-headline); font-weight: 800; color: var(--tertiary);">78 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputHsqPres" class="range-slider" min="0" max="100" value="78" oninput="syncCalcInput('pres', this.value)">
+                <input type="number" id="numHsqPres" class="num-input" min="0" max="100" value="78" oninput="syncCalcInput('pres', this.value)">
+              </div>
+            </div>
+
+            <!-- Mündliche Prüfung: Fachgespräch (2/3) -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="inputHsqOral">Mündliches Fachgespräch (20 Min. – 2/3 mündl.)</label>
+                <span id="labelValHsqOral" style="font-family: var(--font-headline); font-weight: 800; color: var(--tertiary);">82 Punkte</span>
+              </div>
+              <div class="calc-input-row">
+                <input type="range" id="inputHsqOral" class="range-slider" min="0" max="100" value="82" oninput="syncCalcInput('oral', this.value)">
+                <input type="number" id="numHsqOral" class="num-input" min="0" max="100" value="82" oninput="syncCalcInput('oral', this.value)">
+              </div>
+              <small style="color: var(--on-surface-variant); font-size: 0.75rem;">Schwerpunkt: Führung & Zusammenarbeit (Zulassung erst nach Bestehen von WBQ & HSQ schriftlich!)</small>
+            </div>
+
+            <!-- HSQ & Gesamtstatus Box -->
+            <div class="calc-summary-card" id="hsqFinalStatusBox">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Official IHK Grade Breakdown Overview -->
+        <div class="card" style="margin-top: var(--space-lg);">
+          <h3>Offizielle IHK-Notenstufen & Gewichtungsschlüssel</h3>
+          <table class="summary-table" aria-label="IHK Notenschlüssel Übersicht">
+            <thead>
+              <tr>
+                <th>Prüfungselement</th>
+                <th>Prüfungsform</th>
+                <th>Bestehenskriterium</th>
+                <th>Gewichtung Gesamtnote</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Wirtschaftsbezogene Qualifikationen (WBQ)</strong></td>
+                <td>4 Klausuren (75/90/75/90 Min.)</td>
+                <td>Jedes Fach mind. 50 Punkte (oder Ergänzungsprüfung)</td>
+                <td><strong>25 %</strong> (Arithmetisches Mittel der 4 Fächer)</td>
+              </tr>
+              <tr>
+                <td><strong>HSQ: Schriftliche Situationsaufgaben</strong></td>
+                <td>2 Tage à 240 Min.</td>
+                <td>Mittelwert aus Tag 1 und Tag 2 mind. 50 Punkte (keine Ergänzung!)</td>
+                <td><strong>50 %</strong> (Mittelwert der Situationsaufgaben 1 & 2)</td>
+              </tr>
+              <tr>
+                <td><strong>HSQ: Situationsbezogenes Fachgespräch</strong></td>
+                <td>Präsentation (1/3) + Fachgespräch (2/3)</td>
+                <td>Gesamtergebnis mündlich mind. 50 Punkte</td>
+                <td><strong>25 %</strong> (Gewichtetes Ergebnis aus Präsentation und Gespräch)</td>
+              </tr>
+              <tr style="background-color: var(--surface-container-low); font-weight: 700;">
+                <td colspan="3">GESAMTABSCHLUSS: Geprüfte/-r Wirtschaftsfachwirt/-in (IHK)</td>
+                <td><strong>100 %</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: var(--space-sm); font-size: 0.8rem; color: var(--on-surface-variant);">
+            IHK-Notenschlüssel: 100–92 Pkt. = Note 1 (sehr gut) | unter 92–81 Pkt. = Note 2 (gut) | unter 81–67 Pkt. = Note 3 (befriedigend) | unter 67–50 Pkt. = Note 4 (ausreichend) | unter 50–30 Pkt. = Note 5 (mangelhaft) | unter 30 Pkt. = Note 6 (ungenügend).
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: MÜNDLICHE PRÜFUNG & METHODIK -->
+      <section class="tab-panel" id="panel-oral" role="tabpanel" aria-labelledby="tab-oral">
+        <div class="section-head">
+          <div>
+            <h2>Mündliche Prüfung & IHK-Klausurmethodik</h2>
+            <p>Erfolgsstrategien für die 30-minütige Vorbereitungszeit im Fachgespräch, Flipchart-Visualisierung und Klausur-Hacks für die 240-Minuten-Situationsaufgaben.</p>
+          </div>
+          <span class="badge badge-primary">Schwerpunkt: Führung & Zusammenarbeit</span>
+        </div>
+
+        <!-- 30-Minuten-Vorbereitungsplan -->
+        <h3 style="margin-bottom: var(--space-md); display: flex; align-items: center; gap: var(--space-xs);">
+          <span class="step-badge">!</span> Der 30-Minuten-Masterplan im Vorbereitungsraum
+        </h3>
+        <p style="margin-bottom: var(--space-md);">
+          Im Vorbereitungsraum erhalten Sie eine praxisbezogene Problemstellung. Ihnen stehen Flipchart, Pinwand, Moderationskarten, Marker und Stifte zur Verfügung. Eigene Unterlagen sind streng verboten! Teilen Sie die 30 Minuten strikt wie folgt ein:
+        </p>
+
+        <div class="guide-step-grid">
+          <div class="step-card">
+            <span class="step-number">Minuten 0 – 5</span>
+            <h4 style="margin-top: var(--space-sm); margin-bottom: var(--space-xs);">1. Auftrag analysieren</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant);">
+              Rolle der Führungskraft klären: Wer sind Sie im Szenario (Abteilungsleiter, Projektleiter, Coach)? Was ist das primäre Ziel des Handlungsauftrags?
+            </p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">Minuten 5 – 15</span>
+            <h4 style="margin-top: var(--space-sm); margin-bottom: var(--space-xs);">2. Lösung konzipieren</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant);">
+              Auf dem Konzeptpapier strukturieren: Ist-Zustand → Ursachenanalyse (z.B. Konfliktursachen nach Glasl) → 3-Stufen-Maßnahmenplan → Risiken & Controlling.
+            </p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">Minuten 15 – 25</span>
+            <h4 style="margin-top: var(--space-sm); margin-bottom: var(--space-xs);">3. Flipchart gestalten</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant);">
+              Struktur visualisieren: Titelzeile mit rotem/blauem Rahmen, nummerierte Blöcke, Moderationskarten für Kernbegriffe, saubere Druckschrift in Groß-/Kleinschreibung.
+            </p>
+          </div>
+          <div class="step-card">
+            <span class="step-number">Minuten 25 – 30</span>
+            <h4 style="margin-top: var(--space-sm); margin-bottom: var(--space-xs);">4. Einstieg & Generalprobe</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant);">
+              Einstiegssatz im Kopf formulieren. Blickkontakt zu allen drei Prüfern planen. Zeitstoppuhr bereitlegen (Präsentation darf maximal 10 Minuten dauern!).
+            </p>
+          </div>
+        </div>
+
+        <!-- Flipchart Anatomy Visual Mockup -->
+        <div class="card card-ruled" style="margin-bottom: var(--space-xl);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-sm); flex-wrap: wrap; gap: var(--space-xs);">
+            <h3>Muster-Flipchart: Perfekter Aufbau für 10-Minuten-Präsentationen</h3>
+            <span class="badge badge-success">IHK Best Practice Muster</span>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-md);">
+            Der Prüfungsausschuss bewertet Übersichtlichkeit, Logik und Visualisierung. Ein überladenes Flipchart kostet Punkte; klare Kästen und signalfarbene Akzente sichern die Note 1.
+          </p>
+
+          <div class="flipchart-container" role="img" aria-label="Visualisierung eines optimalen IHK-Prüfungsflipcharts">
+            <div class="flipchart-header">
+              <span class="label-caps" style="color: var(--tertiary);">Projekt-Restrukturierung</span>
+              <h2 style="font-size: 1.2rem; color: var(--primary);">Handlungskonzept: Team-Konflikt & Effizienzsteigerung</h2>
+            </div>
+
+            <div class="flipchart-cards-row">
+              <div class="fc-card">
+                <strong>1. IST-ANALYSE & PROBLEM</strong>
+                <ul style="margin-left: 1rem; margin-top: 4px; font-size: 0.8rem;">
+                  <li>Terminverzug im Software-Rollout</li>
+                  <li>Rollenkonflikte (Tuckman: <em>Storming-Phase</em>)</li>
+                  <li>Mangelhafte Informationsflüsse</li>
+                </ul>
+              </div>
+              <div class="fc-card fc-card-blue">
+                <strong>2. ZIELSETZUNG (SMART)</strong>
+                <ul style="margin-left: 1rem; margin-top: 4px; font-size: 0.8rem;">
+                  <li>Termineinhaltung bis Q3 sicherstellen</li>
+                  <li>Rollentransparenz nach RACI-Matrix</li>
+                  <li>Reifeorientierte Führung (Hersey/B.)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div style="background-color: #f0f7ff; border: 1px solid #b3d7ff; padding: var(--space-xs) var(--space-sm); margin-bottom: var(--space-sm); font-size: 0.85rem;">
+              <strong style="color: var(--primary);">3. DREISTUFIGER MAßNAHMENPLAN:</strong>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; margin-top: 4px; font-size: 0.78rem;">
+                <div style="background: white; padding: 4px; border: 1px solid #ddd;">
+                  <strong>Sofortmaßnahme:</strong> Moderierter Team-Workshop (Harvard-Konzept)
+                </div>
+                <div style="background: white; padding: 4px; border: 1px solid #ddd;">
+                  <strong>Organisation:</strong> Einführung wöchentlicher Stand-ups & Kanban
+                </div>
+                <div style="background: white; padding: 4px; border: 1px solid #ddd;">
+                  <strong>Führung:</strong> Bilaterale Entwicklungsgespräche (AKV-Prinzip)
+                </div>
+              </div>
+            </div>
+
+            <div class="flipchart-cards-row" style="margin-bottom: 0;">
+              <div class="fc-card fc-card-green">
+                <strong>4. RISIKEN & GEGENSTEUERUNG</strong>
+                <p style="font-size: 0.78rem; margin-top: 2px;">Widerstand gegen Veränderung → Einbindung von Multiplikatoren (Lewin Change-Modell).</p>
+              </div>
+              <div class="fc-card">
+                <strong>5. ERFOLGSKONTROLLE & FAZIT</strong>
+                <p style="font-size: 0.78rem; margin-top: 2px;">Meilensteine, Burndown-Charts, Feedbackrunden. Win-Win für Team & Unternehmen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Essential Theory Models -->
+        <h3 style="margin-bottom: var(--space-md);">Die 4 unverzichtbaren Führungskonzepte für das Fachgespräch</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-xl);">
+          <div class="card">
+            <h4 style="color: var(--primary); margin-bottom: var(--space-xs);">1. Situatives Führen (Hersey/Blanchard)</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-sm);">
+              Führungsverhalten richtet sich nach dem Reifegrad des Mitarbeiters (Kompetenz & Motivation).
+            </p>
+            <ul style="font-size: 0.8rem; margin-left: 1.2rem; color: var(--on-surface);">
+              <li><strong>R1 (Geringe Reife):</strong> Dirigieren / Unterweisen (Telling)</li>
+              <li><strong>R2 (Mäßige Reife):</strong> Überzeugen / Verkaufen (Selling)</li>
+              <li><strong>R3 (Mittlere Reife):</strong> Partizipieren / Unterstützen (Participating)</li>
+              <li><strong>R4 (Hohe Reife):</strong> Delegieren / Vertrauen (Delegating)</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4 style="color: var(--primary); margin-bottom: var(--space-xs);">2. Teamphasen nach Bruce Tuckman</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-sm);">
+              Jedes Team durchläuft typische Phasen, in denen die Führungskraft anders intervenieren muss.
+            </p>
+            <ul style="font-size: 0.8rem; margin-left: 1.2rem; color: var(--on-surface);">
+              <li><strong>Forming (Orientierung):</strong> Sicherheit & klare Ziele geben</li>
+              <li><strong>Storming (Konfrontation):</strong> Konflikte moderieren, Regeln klären</li>
+              <li><strong>Norming (Organisation):</strong> Wir-Gefühl stärken, Rollen fixieren</li>
+              <li><strong>Performing (Leistung):</strong> Delegieren, Ressourcen sichern</li>
+              <li><strong>Adjourning (Auflösung):</strong> Reflexion, Feedback, Abschluss</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4 style="color: var(--primary); margin-bottom: var(--space-xs);">3. Harvard-Konzept des Verhandelns</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-sm);">
+              Sachbezogenes, konstruktives Verhandeln zur Erzielung nachhaltiger Win-Win-Lösungen.
+            </p>
+            <ul style="font-size: 0.8rem; margin-left: 1.2rem; color: var(--on-surface);">
+              <li><strong>1. Menschen und Probleme</strong> getrennt behandeln</li>
+              <li><strong>2. Auf Interessen</strong> konzentrieren, nicht auf starre Positionen</li>
+              <li><strong>3. Optionen</strong> zum beiderseitigen Vorteil entwickeln (Brainstorming)</li>
+              <li><strong>4. Objektive Kriterien</strong> anwenden (Marktpreise, Gesetze, Normen)</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h4 style="color: var(--primary); margin-bottom: var(--space-xs);">4. Das Kritik- & Feedbackgespräch</h4>
+            <p style="font-size: 0.875rem; color: var(--on-surface-variant); margin-bottom: var(--space-sm);">
+              Strukturierter Leitfaden für schwierige Mitarbeitergespräche ohne Gesichtsverlust.
+            </p>
+            <ul style="font-size: 0.8rem; margin-left: 1.2rem; color: var(--on-surface);">
+              <li><strong>W-W-W Formel:</strong> Wahrnehmung (konkret) → Wirkung (auf Team/Kunden) → Wunsch (für die Zukunft)</li>
+              <li><strong>Ich-Botschaften</strong> statt pauschaler Du-Vorwürfe</li>
+              <li><strong>Vier-Augen-Prinzip:</strong> Niemals vor Kollegen kritisieren</li>
+              <li><strong>SMART-Vereinbarung:</strong> Schriftliche Zielvereinbarung & Folgetermin</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Time Management 240 Min. Situationsaufgabe -->
+        <div class="callout callout-warning">
+          <div class="callout-title">
+            <i class="ph-bold ph-timer" aria-hidden="true"></i>
+            Goldene Zeitmanagement-Formel für die schriftlichen 240-Minuten-Situationsaufgaben
+          </div>
+          <p style="font-size: 0.9rem; margin-bottom: var(--space-xs);">
+            In jeder der zwei schriftlichen Situationsaufgaben werden 100 Punkte vergeben. Bei 240 Minuten Gesamtdauer gilt die Faustregel:
+            <strong>1 Punkt = exakt 2,4 Minuten Bearbeitungszeit!</strong>
+          </p>
+          <ul style="font-size: 0.85rem; margin-left: 1.2rem; margin-top: var(--space-xs);">
+            <li><strong>Minuten 0 – 20:</strong> Sachverhalt komplett durchlesen, Unternehmensdaten & Zahlen farbig markieren, Fragestellungen analysieren.</li>
+            <li><strong>Minuten 20 – 220:</strong> Aufgaben nach Punkten gewichten (z.B. 10-Punkte-Aufgabe = max. 24 Minuten). Bleiben Sie niemals an einer Teilaufgabe hängen!</li>
+            <li><strong>Minuten 220 – 240:</strong> 20 Minuten Pufferzeit für Nachrechnen, Paragraphen-Zitate (BGB/HGB) und Vollständigkeitscheck.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- TAB 5: CHECKLISTE -->
+      <section class="tab-panel" id="panel-checklist" role="tabpanel" aria-labelledby="tab-checklist">
+        <div class="section-head">
+          <div>
+            <h2>Persönlicher IHK-Vorbereitungsplan & Meilensteine</h2>
+            <p>Haken Sie alle organisatorischen und fachlichen Meilensteine von der IHK-Zulassung bis zur mündlichen Abschlussprüfung ab.</p>
+          </div>
+          <div class="badge-bar">
+            <button class="btn btn-outline btn-sm" onclick="toggleAllChecklist(true)">Alle abhaken</button>
+            <button class="btn btn-outline btn-sm" onclick="toggleAllChecklist(false)">Zurücksetzen</button>
+          </div>
+        </div>
+
+        <div class="checklist-wrapper">
+          <div class="card" style="margin-bottom: var(--space-md); background-color: var(--surface-container-low);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-xs);">
+              <span class="label-caps">Meilenstein-Fortschritt</span>
+              <strong id="checklistProgressText" style="color: var(--primary);">0 von 12 Meilensteinen erledigt</strong>
+            </div>
+            <div class="progress-bar-bg" style="height: 10px; background-color: #d8d8d8; border: 1px solid #bbb;">
+              <div class="progress-bar-fill" id="checklistProgressBar" style="background-color: var(--positive); width: 0%;"></div>
+            </div>
+          </div>
+
+          <div id="checklistItemsContainer">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer Note -->
+    <footer style="margin-top: var(--space-3xl); padding-top: var(--space-md); border-top: 1px solid var(--outline-variant); font-size: 0.8rem; color: var(--on-surface-variant); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--space-sm);">
+      <div>
+        IHK Wirtschaftsfachwirt Fortbildungsprüfung nach § 53ff. BBiG • Bundesweiter DIHK-Rahmenstoffplan • DQR Niveau 6
+      </div>
+      <div>
+        Alle Angaben nach amtlicher Prüfungsverordnung und Merkblättern.
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- NotebookOS API Shim Tag for state persistence -->
+  <api-shim></api-shim>
+
+  <script>
+    /* ==========================================================================
+       CURRICULUM DATA MODEL (All 9 Areas based on DIHK Rahmenstoffplan)
+       ========================================================================== */
+    const CURRICULUM_DATA = [
+      // TEIL 1: WBQ
+      {
+        part: 'wbq',
+        subjectId: 'vwl_bwl',
+        subjectTitle: '1. Volks- und Betriebswirtschaft',
+        examTime: '75 Minuten schriftlich',
+        topics: [
+          {
+            id: '1.1',
+            title: 'Volkswirtschaftliche Grundlagen',
+            desc: 'Marktformen (Monopol, Oligopol, Polypol), Preisbildung durch Angebot und Nachfrage, Preiselastizitäten. Konjunkturzyklen (Aufschwung, Boom, Rezession, Depression) und Indikatoren (Früh-, Präsens-, Spätindikatoren). Magisches Viereck/Sechseck und EZB-Geldpolitik.',
+            laws: ['Stabilitätsgesetz § 1', 'EZB-Leitzins', 'BIP'],
+            examType: 'Schriftliche Fallaufgabe',
+            tip: 'Verwechseln Sie bei Konjunkturindikatoren nie Auftragseingänge (Frühindikator) mit Arbeitslosenzahlen (Spätindikator).'
+          },
+          {
+            id: '1.2',
+            title: 'Betriebliche Funktionen und deren Zusammenwirken',
+            desc: 'Die betriebliche Wertschöpfungskette nach Porter: Primäraktivitäten (Eingangslogistik, Produktion, Marketing/Vertrieb) vs. Unterstützungsaktivitäten (Infrastruktur, Personal, Technologie). Schnittstellenmanagement zwischen Beschaffung, Fertigung und Absatz.',
+            laws: ['Porter Value Chain', 'Schnittstellenanalyse'],
+            examType: 'Organisationsaufgabe',
+            tip: 'In Situationsaufgaben wird häufig nach Reibungsverlusten an den Schnittstellen zwischen Einkauf, Fertigung und Vertrieb gefragt.'
+          },
+          {
+            id: '1.3',
+            title: 'Existenzgründung und Unternehmensrechtsformen',
+            desc: 'Systematischer Rechtsformenvergleich: Einzelunternehmen, Personengesellschaften (GbR, OHG, KG) vs. Kapitalgesellschaften (GmbH, UG haftungsbeschränkt, AG). Haftungsverhältnisse (unbeschränkt, solidarisch vs. beschränkt auf Einlage), Mindestkapital und Handelsregister (Abt. A vs. B).',
+            laws: ['HGB §§ 105, 161 (OHG/KG)', 'GmbHG § 5 (25.000 €)', 'AktG § 7 (50.000 €)'],
+            examType: 'Berechnungs- & Entscheidungstabelle',
+            tip: 'Prüfen Sie bei der KG immer genau: Wer haftet unmittelbar und unbeschränkt (Komplementär)? Wer haftet nur bis zur eingetragenen Haftsumme (Kommanditist)?'
+          },
+          {
+            id: '1.4',
+            title: 'Unternehmenszusammenschlüsse',
+            desc: 'Kooperation (Kartell, Interessengemeinschaft, Joint Venture) vs. Konzentration (Konzern, Fusion). Horizontale, vertikale und diagonale/konglomerate Zusammenschlüsse. Kartellverbot nach GWB und Fusionskontrolle durch das Bundeskartellamt.',
+            laws: ['GWB § 1 (Kartellverbot)', 'GWB §§ 35 ff. (Fusionskontrolle)'],
+            examType: 'Rechtliche Fallbeurteilung',
+            tip: 'Wichtig ist die Unterscheidung: Behalten die Unternehmen ihre rechtliche und wirtschaftliche Selbstständigkeit (Kooperation) oder geben sie diese auf (Fusion)?'
+          }
+        ]
+      },
+      {
+        subjectId: 'rewe',
+        part: 'wbq',
+        subjectTitle: '2. Rechnungswesen',
+        examTime: '90 Minuten schriftlich',
+        topics: [
+          {
+            id: '2.1',
+            title: 'Grundlegende Aspekte des Rechnungswesens',
+            desc: 'Systematische Trennung: Externes Rechnungswesen (Finanzbuchhaltung nach HGB, Informations- und Dokumentationsfunktion) vs. Internes Rechnungswesen (KLR, Steuerungs- und Kontrollfunktion). Begriffspaare: Einzahlung/Auszahlung, Einnahme/Ausgabe, Ertrag/Aufwand, Leistung/Kosten.',
+            laws: ['HGB §§ 238 ff.', 'Grundbegriffe Strom-/Bestandsgrößen'],
+            examType: 'Begriffsabgrenzung & Zuordnung',
+            tip: 'Achten Sie peinlich genau auf pagatorische vs. kalkulatorische Kosten (z.B. kalkulatorischer Unternehmerlohn, kalkulatorische Miete).'
+          },
+          {
+            id: '2.2',
+            title: 'Finanzbuchhaltung & Jahresabschluss',
+            desc: 'Grundsätze ordnungsmäßiger Buchführung (GoB). Bilanzierungsgrundsätze: Vorsichtsprinzip, Realisationsprinzip, Imparitätsprinzip. Niederstwertprinzip: strenges Niederstwertprinzip beim Umlaufvermögen (§ 253 Abs. 4 HGB) vs. gemildertes beim Anlagevermögen (§ 253 Abs. 3 HGB).',
+            laws: ['HGB § 252 (Bilanzgrundsätze)', 'HGB § 253 (Wertansätze)'],
+            examType: 'Bewertungs- und Buchungsfälle',
+            tip: 'Das strenge Niederstwertprinzip zwingt beim Umlaufvermögen (z.B. Rohstoffe, Fertigerzeugnisse) immer zur Abwertung auf den niedrigeren Börsen- oder Marktpreis!'
+          },
+          {
+            id: '2.3',
+            title: 'Kosten- und Leistungsrechnung (KLR)',
+            desc: 'Kostenarten-, Kostenstellen- (BAB, Umlageschlüssel) und Kostenträgerrechnung. Kalkulationsverfahren (Zuschlagskalkulation, Maschinenstundensatz). Teilkostenrechnung: Einstufige und mehrstufige Deckungsbeitragsrechnung. Break-Even-Point-Berechnung: x = Kf / (p - kv).',
+            laws: ['Deckungsbeitrag DB = p - kv', 'Gewinnschwelle x_BEP = Kf / db'],
+            examType: 'Kalkulations- & Berechnungsaufgabe',
+            tip: 'Bei der Frage nach Annahme von Zusatzaufträgen bei Unterbeschäftigung: Solange der Preis über den variablen Stückkosten liegt (positiver Deckungsbeitrag), lohnt sich der Auftrag!'
+          },
+          {
+            id: '2.4',
+            title: 'Auswertung der betriebswirtschaftlichen Zahlen',
+            desc: 'Bilanz- und Rentabilitätskennzahlen: Eigenkapitalrentabilität, Gesamtkapitalrentabilität (inkl. Fremdkapitalzinsen!), Umsatzrentabilität. ROI (DuPont-Kennzahlensystem). Liquiditätsgrade 1 (Barliquidität), 2 (Einzugsliquidität) und 3 (laufende Liquidität). Cashflow.',
+            laws: ['GK-Rentabilität = (Gewinn + FK-Zinsen) / GK * 100', 'ROI = Umsatzrendite * Kapitalumschlag'],
+            examType: 'Kennzahlenanalyse & Interpretation',
+            tip: 'Vergessen Sie bei der Gesamtkapitalrentabilität niemals, die Fremdkapitalzinsen im Zähler wieder zum Jahresüberschuss zu addieren!'
+          },
+          {
+            id: '2.5',
+            title: 'Planungsrechnung & Budgetierung',
+            desc: 'Operative Finanz- und Liquiditätsplanung. Budgetierungstechniken (Fortschreibungsbudgetierung vs. Zero-Base-Budgeting). Soll-Ist-Vergleiche, Ermittlung und Analyse von Abweichungen.',
+            laws: ['Zero-Base-Budgeting', 'Liquiditätsstatus'],
+            examType: 'Planungs- & Abweichungsanalyse',
+            tip: 'Zero-Base-Budgeting startet bei jeder Periode bei Null. Es hinterfragt alle Kosten, erfordert aber einen sehr hohen Vorbereitungsaufwand.'
+          }
+        ]
+      },
+      {
+        subjectId: 'recht_steuern',
+        part: 'wbq',
+        subjectTitle: '3. Recht und Steuern',
+        examTime: '75 Minuten schriftlich',
+        topics: [
+          {
+            id: '3.1',
+            title: 'Rechtliche Zusammenhänge (BGB, HGB, Arbeitsrecht)',
+            desc: 'Rechts- und Geschäftsfähigkeit (Nichtigkeit, schwebende Unwirksamkeit bei Minderjährigen § 107 BGB). Anfechtung wegen Irrtums (§ 119 BGB) oder arglistiger Täuschung (§ 123 BGB). Zustandekommen Kaufvertrag (§ 433 BGB) und Mängelrechte (§ 437 BGB: Vorrang der Nacherfüllung!). HGB: Kaufmannsbegriff (§§ 1-6 HGB), Vollmachten (Prokura §§ 48-53 HGB vs. Handlungsvollmacht § 54 HGB). Arbeitsrecht: KSchG, Abmahnung, Kündigungsarten.',
+            laws: ['BGB §§ 433, 437, 439', 'HGB §§ 48-53 (Prokura)', 'KSchG § 1'],
+            examType: 'Juristische Fallgutachten mit Paragraphen',
+            tip: 'Ein Prokurist darf fast alle Rechtsgeschäfte tätigen, AUSSER: Grundstücke veräußern/belasten (benötigt besondere Befugnis), Bilanz unterschreiben, Prokura erteilen oder Insolvenz anmelden.'
+          },
+          {
+            id: '3.2',
+            title: 'Steuerliche Bestimmungen',
+            desc: 'Abgabenordnung (AO): Definition Steuer, Gebühr, Beitrag. Einkommensteuer (ESt): 7 Einkunftsarten, Freibeträge, прогрессiv tarif. Körperschaftsteuer (KSt): 15% zzgl. Solidaritätszuschlag auf das zu versteuernde Einkommen juristischer Personen. Gewerbesteuer (GewSt): Steuermessbetrag (3,5%) x Hebesatz der Gemeinde. Umsatzsteuer (USt): 19% / 7%, Vorsteuerabzug nach § 15 UStG.',
+            laws: ['EStG § 2 (7 Einkunftsarten)', 'KStG § 23 (15%)', 'GewStG § 11', 'UStG § 12, § 15'],
+            examType: 'Steuerberechnung & rechtliche Einordnung',
+            tip: 'Personengesellschaften (OHG, KG) unterliegen NICHT der Körperschaftsteuer; hier versteuern die Gesellschafter ihren Gewinnanteil mit der Einkommensteuer!'
+          }
+        ]
+      },
+      {
+        subjectId: 'unternehmensfuehrung',
+        part: 'wbq',
+        subjectTitle: '4. Unternehmensführung',
+        examTime: '90 Minuten schriftlich',
+        topics: [
+          {
+            id: '4.1',
+            title: 'Betriebsorganisation',
+            desc: 'Aufbauorganisation: Einliniensystem, Mehrliniensystem (Funktionsmeistersystem), Stabliniensystem, Matrixorganisation, Spartenorganisation (Divisionale Organisation). Vor- und Nachteile der Systeme. Ablauforganisation: Ereignisgesteuerte Prozessketten (EPK), Durchlaufzeiten, KVP und Qualitätsmanagement nach ISO 9001.',
+            laws: ['DIN EN ISO 9001', 'Organigramme'],
+            examType: 'Organigramm-Analyse & Vor-/Nachteile',
+            tip: 'Die Matrixorganisation bietet hohe Spezialisierung und Teamarbeit, birgt aber hohes Konfliktpotenzial durch Doppelunterstellung der Mitarbeiter!'
+          },
+          {
+            id: '4.2',
+            title: 'Personalführung',
+            desc: 'Führungsstile: Autoritär, kooperativ, Laissez-faire. Führungstechniken: Management by Objectives (MbO), Management by Delegation (MbD), Management by Exception (MbE). Motivationstheorien: Maslowsche Bedürfnispyramide, Herzbergs Zwei-Faktoren-Modell (Motivatoren vs. Hygienefaktoren).',
+            laws: ['MbO (SMART)', 'Herzberg 2-Faktoren-Theorie'],
+            examType: 'Führungsszenarien & Motivationsanalyse',
+            tip: 'Nach Herzberg verhindert Gehalt nur Unzufriedenheit (Hygienefaktor), motiviert aber nicht dauerhaft. Echte Zufriedenheit stiften nur Motivatoren (Verantwortung, Anerkennung, Wachstum).'
+          },
+          {
+            id: '4.3',
+            title: 'Personalentwicklung',
+            desc: 'Phasen der Personalentwicklung: Bedarfsanalyse, Zielsetzung, Durchführung, Transfer- und Erfolgskontrolle. Methoden: Into-the-job (Berufsausbildung, Einarbeitung), On-the-job (Jobrotation, Jobenrichment, Jobenlargement), Near-the-job (Qualitätszirkel), Off-the-job (Seminare) und Out-of-the-job (Outplacement).',
+            laws: ['Jobenrichment vs. Jobenlargement', 'Bildungscontrolling'],
+            examType: 'PE-Konzept für Problemszenario',
+            tip: 'Jobenlargement = quantitative Aufgabenerweiterung auf gleichem Anforderungsniveau. Jobenrichment = qualitative Bereicherung durch höhere Verantwortung/Entscheidungskompetenz.'
+          }
+        ]
+      },
+
+      // TEIL 2: HSQ
+      {
+        subjectId: 'management',
+        part: 'hsq',
+        subjectTitle: '5. Betriebliches Management',
+        examTime: 'In Situationsaufgabe 1 (240 Min.)',
+        topics: [
+          {
+            id: '5.1',
+            title: 'Betriebliche Planungsprozesse & Betriebsstatistik',
+            desc: 'Strategische Analysewerkzeuge: SWOT-Analyse (Kombination von Stärken/Schwächen mit Chancen/Risiken: SO, ST, WO, WT-Strategien). BCG-Matrix (Portfolio-Analyse: Question Marks, Stars, Cash Cows, Poor Dogs). Branchenstrukturanalyse nach Porter (5 Forces). Statistische Methoden: Zeitreihenanalyse, gleitende Durchschnitte, Trendextrapolation.',
+            laws: ['BCG-Matrix', 'SWOT-Matrix', 'Porter 5 Forces'],
+            examType: 'Strategische Fallstudie & Matrixerstellung',
+            tip: 'Leiten Sie aus einer SWOT-Analyse immer konkrete Handlungsstrategien ab: SO-Strategie = Stärken nutzen, um Chancen zu realisieren!'
+          },
+          {
+            id: '5.2',
+            title: 'Organisations- und Personalentwicklung',
+            desc: 'Change Management und Veränderungsprozesse. 3-Phasen-Modell von Kurt Lewin (Unfreeze, Move/Change, Refreeze). Kotters 8-Stufen-Modell des Wandels. Umgang mit Widerständen der Belegschaft, Unternehmenskultur und Wissensmanagement.',
+            laws: ['Kurt Lewin 3-Phasen', 'Kotter 8-Stufen'],
+            examType: 'Change-Management-Konzeption',
+            tip: 'Vergessen Sie in Change-Aufgaben niemals die Phase "Refreeze" (Stabilisierung) – ohne Verankerung der neuen Prozesse im Alltag droht der Rückfall in alte Muster.'
+          },
+          {
+            id: '5.3',
+            title: 'Informationstechnologie und Wissensmanagement',
+            desc: 'Einsatz von ERP- und CRM-Systemen. IT-Sicherheit, Datensicherungskonzepte (3-2-1-Regel), Ausfallsicherheit. Datenschutz nach DSGVO (Grundsätze: Zweckbindung, Datenminimierung, Betroffenenrechte, Auftragsverarbeitung). Wissensmanagement (SECI-Modell nach Nonaka/Takeuchi).',
+            laws: ['DSGVO Art. 5 (Grundsätze)', 'DSGVO Art. 17 (Recht auf Löschen)'],
+            examType: 'IT-Sicherheits- & Datenschutzkonzept',
+            tip: 'Bei DSGVO-Fragen: Die Rechtmäßigkeit der Verarbeitung verlangt stets eine Rechtsgrundlage (Einwilligung, Vertragserfüllung oder berechtigtes Interesse nach Art. 6 DSGVO).'
+          },
+          {
+            id: '5.4',
+            title: 'Managementtechniken & Entscheidungsfindung',
+            desc: 'Zeitmanagement: Eisenhower-Matrix (Dringlichkeit vs. Wichtigkeit), ALPEN-Methode, Pomodoro. Kreativitätstechniken: Brainstorming, 6-3-5 Methode, Morphologischer Kasten. Entscheidungstechniken: Nutzwertanalyse (Scoring-Modell mit Gewichtung und Kriterienkatalog), Entscheidungsbaum.',
+            laws: ['Nutzwertanalyse', 'Eisenhower-Prinzip'],
+            examType: 'Berechnung Nutzwertanalyse & Priorisierung',
+            tip: 'Bei der Nutzwertanalyse muss die Summe der Gewichte immer 100% bzw. 1,0 ergeben. Multiplizieren Sie die Einzelnoten sauber mit den Gewichten!'
+          }
+        ]
+      },
+      {
+        subjectId: 'invest_finanz',
+        part: 'hsq',
+        subjectTitle: '6. Investition, Finanzierung, Rewe und Controlling',
+        examTime: 'In Situationsaufgabe 2 (240 Min.)',
+        topics: [
+          {
+            id: '6.1',
+            title: 'Investitionsplanung und -rechnung',
+            desc: 'Statische Verfahren: Kostenvergleich, Gewinnvergleich, Rentabilitätsvergleich, statische Amortisationsrechnung. Dynamische Verfahren: Kapitalwertmethode (NPV mit Abzinsungsfaktor 1/(1+i)^t), Interner Zinsfuß (IRR), Annuitätenmethode.',
+            laws: ['Kapitalwertformel $C_0 = -I_0 + \\sum E_t \\cdot (1+i)^{-t}$', 'Amortisationszeit = Anschaffungskosten / Gewinn + Abschreibung'],
+            examType: 'Ausführliche Investitionsvergleichsrechnung',
+            tip: 'Ein Investitionsprojekt ist vorteilhaft, wenn der Kapitalwert größer als null ist (C0 > 0). Bei Auswahl unter mehreren Projekten: höchster Kapitalwert gewinnt.'
+          },
+          {
+            id: '6.2',
+            title: 'Finanzplanung und Kapitalbedarf',
+            desc: 'Kapitalbedarfsrechnung im Anlage- und Umlaufvermögen. Liquiditätsstatus und Cashflow-Berechnung (direkte vs. indirekte Methode). Working Capital und Working Capital Ratio.',
+            laws: ['Working Capital = Umlaufvermögen - kurzfristiges Fremdkapital'],
+            examType: 'Liquiditätsrechnung & Finanzbedarfsplan',
+            tip: 'Ein negatives Working Capital bedeutet, dass langfristiges Anlagevermögen durch kurzfristige Kredite finanziert wird – Verstoß gegen die goldene Bilanzregel!'
+          },
+          {
+            id: '6.3',
+            title: 'Finanzierungsarten',
+            desc: 'Systematik: Innenfinanzierung (Selbstfinanzierung/Gewinnthesaurierung, Abschreibungsfinanzierung/Lohmann-Ruchti-Effekt, Rückstellungsfinanzierung) vs. Außenfinanzierung (Beteiligungsfinanzierung, Kreditfinanzierung). Sonderformen: Leasing (Operating vs. Finance Leasing), Factoring (echtes vs. unechtes Factoring) und Mezzanine-Kapital.',
+            laws: ['Lohmann-Ruchti-Effekt', 'Echtes vs. unechtes Factoring'],
+            examType: 'Finanzierungsvergleich & Vor-/Nachteile',
+            tip: 'Beim echten Factoring übernimmt der Factor das volle Delkredererisiko (Ausfallrisiko). Beim unechten Factoring verbleibt das Risiko beim Unternehmen!'
+          },
+          {
+            id: '6.4',
+            title: 'Kosten- und Leistungsrechnung im HQ-Kontext',
+            desc: 'Plankostenrechnung (starr vs. flexibel auf Vollkosten- und Teilkostenbasis). Ermittlung von Beschäftigungsabweichung (Verrechnete Plankosten vs. Sollkosten) und Verbrauchsabweichung (Istkosten vs. Sollkosten). Moderne Verfahren: Target Costing (Allowable Costs vs. Drifting Costs), Prozesskostenrechnung.',
+            laws: ['Verbrauchsabweichung = Istkosten - Sollkosten', 'Beschäftigungsabweichung = Sollkosten - verrechnete Plankosten'],
+            examType: 'Abweichungsanalyse & Target Costing Matrix',
+            tip: 'Die Verbrauchsabweichung liegt in der Verantwortung des Kostenstellenleiters (Unwirtschaftlichkeit). Die Beschäftigungsabweichung ist marktextern bedingt (Auslastung).'
+          },
+          {
+            id: '6.5',
+            title: 'Controlling-Instrumente',
+            desc: 'Die Balanced Scorecard (BSC) mit den 4 Perspektiven: Finanzperspektive, Kundenperspektive, Prozessperspektive und Lern-/Entwicklungsperspektive. Ursache-Wirkungsketten, Kennzahlen, Frühwarnsysteme und Benchmarking.',
+            laws: ['Balanced Scorecard (Kaplan/Norton)', 'Benchmarking-Phasen'],
+            examType: 'BSC-Erstellung für ein Fallunternehmen',
+            tip: 'Ordnen Sie Ziele, Kennzahlen und Maßnahmen strikt den vier BSC-Perspektiven zu. Stellen Sie die Ursache-Wirkungskette zwischen den Perspektiven logisch dar!'
+          }
+        ]
+      },
+      {
+        subjectId: 'logistik',
+        part: 'hsq',
+        subjectTitle: '7. Logistik',
+        examTime: 'In Situationsaufgabe 2 (240 Min.)',
+        topics: [
+          {
+            id: '7.1',
+            title: 'Beschaffung und Einkauf',
+            desc: 'Make-or-Buy-Entscheidung (Kostenvergleich Eigenfertigung vs. Fremdbezug inkl. Fixkostenabbau). Lieferantenbewertung (Scoring-Modell). Beschaffungsstrategien: Single Sourcing vs. Multiple Sourcing, Global Sourcing, Modular Sourcing.',
+            laws: ['Kritische Menge $x = (K_{f,eigen} - K_{f,fremd}) / (k_{v,fremd} - k_{v,eigen})$'],
+            examType: 'Make-or-Buy-Kalkulation & Lieferantenauswahl',
+            tip: 'Make-or-Buy ist nicht nur eine Kostenentscheidung! Beachten Sie qualitative Faktoren: Know-how-Schutz, Abhängigkeiten, Lieferzuverlässigkeit und Qualitätsrisiken.'
+          },
+          {
+            id: '7.2',
+            title: 'Materialwirtschaft und Lagerhaltung',
+            desc: 'Materialklassifizierung: ABC-Analyse (Wertanteil) und XYZ-Analyse (Verbrauchsstetigkeit). Optimale Bestellmenge nach der Andlerschen Formel: x_opt = sqrt((200 * Jahresbedarf * feste Bestellkosten) / (Einstandspreis * Lagerkostensatz)). Lagerkennzahlen: Meldebestand = (Wiederbeschaffungszeit * Tagesverbrauch) + Sicherheitsbestand.',
+            laws: ['Andlersche Formel', 'Meldebestand = WBZ * Tagesbedarf + Mindestbestand'],
+            examType: 'Berechnung Andler & Lagerkennzahlen',
+            tip: 'Bei der optimalen Bestellmenge nach Andler sind feste Bestellkosten und Lagerhaltungskosten genau gleich hoch!'
+          },
+          {
+            id: '7.3',
+            title: 'Fertigungsabläufe und Produktionsplanung',
+            desc: 'Fertigungstypen: Einzelfertigung, Serienfertigung, Massenfertigung. Fertigungsorganisation: Werkstattfertigung, Fließfertigung, Gruppen-/Inselfeldführung. Durchlaufzeitenoptimierung, Just-in-Time (JIT) und Kanban-Steuerung.',
+            laws: ['Kanban-Regelkreis', 'Durchlaufzeit = Rüst- + Bearbeitungs- + Liegezeit'],
+            examType: 'Produktionsablauf-Optimierung',
+            tip: 'Liegezeiten machen in der Praxis oft 80-90% der gesamten Durchlaufzeit aus – hier liegt das größte Einsparpotenzial!'
+          },
+          {
+            id: '7.4',
+            title: 'Aspekte der Rationalisierung & Lean Logistics',
+            desc: 'Lean Production und Kaizen (kontinuierlicher Verbesserungsprozess). Die 5S-Methode (Seiri, Seiton, Seiso, Seiketsu, Shitsuke) für den Arbeitsplatz. Vermeidung der 7 Verschwendungsarten (Muda). Wertstromanalyse.',
+            laws: ['5S-Methode', 'Muda (7 Verschwendungsarten)'],
+            examType: 'Rationalisierungskonzept',
+            tip: 'Nennen Sie bei Rationalisierung immer die Balance aus Wirtschaftlichkeit und Arbeitssicherheit bzw. Mitarbeiterzufriedenheit.'
+          },
+          {
+            id: '7.5',
+            title: 'Spezielle Rechtsaspekte der Logistik',
+            desc: 'Incoterms 2020: Gefahren- und Kostenübergang (EXW, FOB, CIF, DDP). Frachtvertrag nach HGB (§§ 407 ff.), Haftung des Frachtführers (8,33 SZR pro kg). Gefahrgutvorschriften (ADR) und Transportsicherungsrecht.',
+            laws: ['Incoterms 2020 (EXW, FOB, DDP)', 'HGB §§ 407 ff. (Frachtgeschäft)'],
+            examType: 'Rechtliche Haftungs- und Klauselzuordnung',
+            tip: 'Bei DDP (Delivered Duty Paid) trägt der Verkäufer maximale Kosten und Gefahren inkl. Zölle; bei EXW (Ab Werk) trägt der Käufer das absolute Maximum.'
+          }
+        ]
+      },
+      {
+        subjectId: 'marketing_vertrieb',
+        part: 'hsq',
+        subjectTitle: '8. Marketing und Vertrieb',
+        examTime: 'In Situationsaufgabe 1 & 2 (240 Min.)',
+        topics: [
+          {
+            id: '8.1',
+            title: 'Marketingplanung & Marktforschung',
+            desc: 'Marktforschungsmethoden: Primärforschung (Befragung, Beobachtung, Experiment) vs. Sekundärforschung (interne Daten, Statistiken). Marktsegmentierung: Geografische, demografische, psychografische und verhaltensorientierte Kriterien.',
+            laws: ['Primär- vs. Sekundärforschung', 'Marktsegmentierung'],
+            examType: 'Marktforschungskonzeption',
+            tip: 'Sekundärforschung ist immer schneller und kostengünstiger – prüfen Sie in Fallaufgaben daher stets, ob interne Verkaufsdaten bereits vorliegen!'
+          },
+          {
+            id: '8.2',
+            title: 'Marketinginstrumentarium (Marketing-Mix 4P)',
+            desc: 'Produktpolitik: Produktlebenszyklus (Einführung, Wachstum, Reife, Sättigung, Degeneration), Diversifikation, Differenzierung. Preispolitik: Penetrations- vs. Skimmingstrategie, Preisdifferenzierung. Distributionspolitik: Direkter vs. indirekter Vertrieb, Multi-Channel. Kommunikationspolitik: AIDA-Modell, Social-Media, PR.',
+            laws: ['Produktlebenszyklus', 'AIDA-Modell (Attention, Interest, Desire, Action)'],
+            examType: 'Umfassendes 4P-Marketingkonzept',
+            tip: 'Verwechseln Sie nicht Produktdifferenzierung (neue Variante eines bestehenden Produkts) mit Produktdiversifikation (Vorstoß in neue Produkt-/Marktfelder).'
+          },
+          {
+            id: '8.3',
+            title: 'Vertriebsmanagement & Vertriebsorganisation',
+            desc: 'Vertriebsorgane: Angestellter Reisender vs. selbstständiger Handelsvertreter (§ 84 HGB). Kostenvergleich & kritischer Umsatz: Reisende verursachen Fixkosten (Grundgehalt), Handelsvertreter variable Kosten (Provision). Franchising und Vertragshändler.',
+            laws: ['HGB § 84 (Handelsvertreter)', 'Kritischer Umsatz $U_{krit} = K_{f,Reisender} / (p_{Provision} - p_{Spesen})$'],
+            examType: 'Kostenvergleich Reisender vs. Handelsvertreter',
+            tip: 'Ab einem bestimmten Umsatzvolumen (kritischer Umsatz) ist der angestellte Reisende kostengünstiger als der prozentual vergütete Handelsvertreter!'
+          },
+          {
+            id: '8.4',
+            title: 'Internationale Geschäftsbeziehungen & Interkulturelle Kompetenz',
+            desc: 'Markteintrittsstrategien im Ausland: Indirekter/direkter Export, Lizenzvergabe, Franchising, Joint Venture, eigene Tochtergesellschaft. Kulturdimensionen nach Geert Hofstede (Machtdistanz, Individualismus, Unsicherheitsvermeidung).',
+            laws: ['Hofstede Kulturdimensionen', 'Markteintrittsformen'],
+            examType: 'Internationalisierungsstrategie',
+            tip: 'Das Joint Venture teilt Risiken mit einem lokalen Partner, birgt jedoch das Risiko von Know-how-Abfluss und Kulturkonflikten.'
+          },
+          {
+            id: '8.5',
+            title: 'Spezielle Rechtsaspekte im Marketing & Vertrieb',
+            desc: 'Gesetz gegen den unlauteren Wettbewerb (UWG): Irreführende Werbung (§ 5 UWG), unzumutbare Belästigung / Cold Calling (§ 7 UWG). Markenrecht, Kennzeichnungspflichten, Impressumspflicht nach Digitale-Dienste-Gesetz (DDG) und Widerrufsbelehrung im E-Commerce.',
+            laws: ['UWG § 5, § 7', 'MarkenG', 'BGB § 312g (Widerrufsrecht)'],
+            examType: 'Rechtliche Werbe- und Online-Shop-Prüfung',
+            tip: 'Telefonwerbung gegenüber Verbrauchern ohne vorherige ausdrückliche Einwilligung (Opt-in) ist nach § 7 UWG stets unzulässig und abmahnfähig!'
+          }
+        ]
+      },
+      {
+        subjectId: 'fuehrung_zusammenarbeit',
+        part: 'hsq',
+        subjectTitle: '9. Führung und Zusammenarbeit',
+        examTime: 'Klausur SA 1 + MÜNDLICHE PRÜFUNG (Kernschwerpunkt!)',
+        topics: [
+          {
+            id: '9.1',
+            title: 'Zusammenarbeit, Kommunikation und Kooperation',
+            desc: 'Kommunikationsmodelle: Vier-Ohren-Modell von Schulz von Thun (Sachinhalt, Selbstkundgabe, Beziehung, Appell). Axiome von Paul Watzlawick ("Man kann nicht nicht kommunizieren"). Aktives Zuhören, Paraphrasieren, Feedback-Regeln und Ich-Botschaften.',
+            laws: ['Schulz von Thun Vier-Ohren-Modell', 'Watzlawick Axiome'],
+            examType: 'Kommunikationsanalyse & Mündl. Prüfungsdialog',
+            tip: 'Wenn im Prüfungsgespräch ein Mitarbeiter gereizt reagiert: Analysieren Sie, auf welchem "Ohr" er die Nachricht gehört hat (oft Beziehungsebene).'
+          },
+          {
+            id: '9.2',
+            title: 'Mitarbeitergespräche',
+            desc: 'Systematische Vorbereitung, Durchführung und Nachbereitung: Jahresmitarbeitergespräch, Zielvereinbarungsgespräch (SMART-Ziele), Kritikgespräch, Rückkehrgespräch nach Krankheit. Aufbau: Begrüßung/Klima → Sachverhalt/Sichtweise des MA → Lösungsfindung → Vereinbarung.',
+            laws: ['SMART-Kriterien', 'Leitfaden Kritikgespräch'],
+            examType: 'Gesprächsleitfaden & Rollenspiel',
+            tip: 'Immer konkrete Beispiele nennen! Niemals Pauschalisierungen wie "Sie kommen immer zu spät", sondern "Am Dienstag und Donnerstag begann das Meeting ohne Sie".'
+          },
+          {
+            id: '9.3',
+            title: 'Konfliktmanagement',
+            desc: 'Konfliktarten: Zielkonflikte, Rollenkonflikte, Verteilungskonflikte, Beziehungskonflikte. Die 9 Stufen der Konflikteskalation nach Friedrich Glasl (Ebene 1: Verhärtung bis Ebene 3: Taten statt Worte / Zerstörung). Das Harvard-Konzept des sachbezogenen Verhandelns.',
+            laws: ['Glasl 9 Stufen der Konflikteskalation', 'Harvard-Konzept'],
+            examType: 'Konfliktanalyse & Interventionsplan',
+            tip: 'Bei Glasl Stufe 1-3 hilft oft noch Moderation; ab Stufe 4-6 ist professionelle Mediation nötig; ab Stufe 7 hilft nur noch ein Machteingriff von oben.'
+          },
+          {
+            id: '9.4',
+            title: 'Mitarbeiterförderung und Delegation',
+            desc: 'Delegation nach dem AKV-Prinzip (Aufgabe, Kompetenz und Verantwortung müssen immer im Gleichgewicht stehen!). Coaching vs. Mentoring. Betriebliche Weiterbildungsplanung und Entwicklungsförderung.',
+            laws: ['AKV-Prinzip', 'Mitarbeiterförderungsgespräch'],
+            examType: 'Delegationskonzept & Führungssituation',
+            tip: 'Wird eine Aufgabe übertragen, MUSS zwingend auch die entsprechende Entscheidungskompetenz übertragen werden. Die Gesamtverantwortung bleibt bei der Führungskraft!'
+          },
+          {
+            id: '9.5',
+            title: 'Ausbildung planen und durchführen (AEVO-Bezug)',
+            desc: 'Rechtliche Grundlagen nach BBiG: Ausbildungsordnung, Ausbildungsrahmenplan, betrieblicher Ausbildungsplan. Unterweisungsmethoden: Die 4-Stufen-Methode (1. Vorbereiten, 2. Vormachen/Erklären, 3. Nachmachen/Erklären lassen, 4. Üben/Festigen), Lehrgespräch.',
+            laws: ['BBiG §§ 14 ff. (Pflichten Ausbildender)', '4-Stufen-Methode'],
+            examType: 'Ausbildungsplanung & Unterweisungskonzept',
+            tip: 'Bei der 4-Stufen-Methode ist Stufe 3 entscheidend: Der Auszubildende muss nicht nur nachmachen, sondern laut erklären, WAS und WARUM er es so tut!'
+          },
+          {
+            id: '9.6',
+            title: 'Moderation und Steuerung von Projektgruppen',
+            desc: 'Rollen im Projekt: Projektleiter, Auftraggeber, Teammitglieder. Die 5 Teamphasen nach Bruce Tuckman: Forming (Orientierung), Storming (Nahkampf), Norming (Regelbildung), Performing (Leistung) und Adjourning (Auflösung). Moderationstechniken (Kartenabfrage, Zurufabfrage, Punktbewertung).',
+            laws: ['Tuckman Teamphasen', 'Moderationszyklus'],
+            examType: 'Teamentwicklungs- & Moderationskonzept',
+            tip: 'Die Storming-Phase ist völlig normal und notwendig für den Teamerfolg! Die Führungskraft darf sie nicht unterdrücken, sondern muss sie moderieren.'
+          },
+          {
+            id: '9.7',
+            title: 'Präsentationstechniken (Fachgespräch)',
+            desc: 'Präsentationsaufbau: Einleitung (Aufhänger, Ziel, Agenda), Hauptteil (Lösungsbausteine), Schluss (Zusammenfassung, Fazit, Appell). Einsatz von Präsentationsmedien im Prüfungsraum: Flipchart, Pinnwand, Moderationskarten. Körpersprache, Blickkontakt und Umgang mit Prüferfragen.',
+            laws: ['IHK Prüfungsordnung: max. 10 Min. Präsentation'],
+            examType: 'MÜNDLICHE PRÜFUNG (1/3 der mündlichen Note)',
+            tip: 'Halten Sie die 10-Minuten-Grenze streng ein. Nach 10 Minuten wird die Präsentation vom Prüfungsausschuss abgebrochen. Üben Sie mit Stoppuhr!'
+          }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       QUIZ QUESTION BANK (12 Realistic IHK Exam Scenarios)
+       ========================================================================== */
+    const QUIZ_QUESTIONS = [
+      {
+        domain: 'WBQ: Recht und Steuern',
+        examTime: '75 Min. Fach',
+        scenario: 'Die Prokuristin Sabine Wohlfahrt der Metallbau GmbH kauft ohne Rücksprache mit der Geschäftsführung ein neues Betriebsgrundstück für 450.000 € und beabsichtigt, dieses zur Sicherung eines Kredits mit einer Grundschuld zu belasten. Die Geschäftsführer wollen das Geschäft rückgängig machen.',
+        question: 'Durfte Frau Wohlfahrt als Prokuristin dieses Grundstücksgeschäft wirksam abschließen?',
+        options: [
+          'Ja, die Prokura ermächtigt zu allen gerichtlichen und außergerichtlichen Rechtsgeschäften, die ein Handelsgewerbe mit sich bringt.',
+          'Nein, zum Kauf von Grundstücken bedarf die Prokuristin stets einer notariellen Sondergenehmigung.',
+          'Der Kauf des Grundstücks war wirksam, die Belastung mit der Grundschuld jedoch nicht, da Grundstücke nach § 49 Abs. 2 HGB nur mit besonderer Befugnis belastet oder veräußert werden dürfen.',
+          'Nein, Prokuristen dürfen generell keine Verträge über einem Wert von 100.000 € ohne Gegenzeichnung der Geschäftsführung abschließen.'
+        ],
+        correct: 2,
+        feedback: '<strong>Richtig ist Antwort 3:</strong> Nach § 49 Abs. 1 HGB ermächtigt die Prokura zu allen Arten von gerichtlichen und außergerichtlichen Geschäften, die der Betrieb eines Handelsgewerbes mit sich bringt. Daher ist der Erwerb (Kauf) eines Grundstücks gedeckt! Nach § 49 Abs. 2 HGB bedarf die Prokuristin jedoch zur <em>Veräußerung und Belastung</em> von Grundstücken einer besonderen Befugnis (Immobiliarklausel). Die Grundschuldbestellung ist daher ohne Sonderbefugnis unzulässig.',
+        tip: 'Merksatz für die IHK: "Ein Prokurist darf Grundstücke kaufen, aber nicht verkaufen oder belasten."'
+      },
+      {
+        domain: 'WBQ: Rechnungswesen (KLR)',
+        examTime: '90 Min. Fach',
+        scenario: 'Ein Maschinenhersteller produziert 1.000 Einheiten eines Standardaggregats pro Monat bei einer Maximalkapazität von 1.500 Einheiten. Die fixen Gesamtkosten betragen 60.000 €/Monat, die variablen Stückkosten 80 €. Der reguläre Verkaufspreis liegt bei 150 €. Ein Neukunde fragt kurzfristig nach einem Zusatzauftrag über 300 Aggregate zu einem Sonderpreis von 105 € an.',
+        question: 'Wie sollte das Unternehmen aus Sicht der Deckungsbeitragsrechnung kurzfristig entscheiden?',
+        options: [
+          'Ablehnen, da der Sonderpreis (105 €) die vollen Stückkosten von 140 € (80 € var. + 60 € fix) deutlich unterschreitet.',
+          'Annehmen, da freie Kapazitäten vorliegen und ein positiver Stückdeckungsbeitrag von 25 € erzielt wird, der das Betriebsergebnis um 7.500 € verbessert.',
+          'Ablehnen, da das Unternehmen dadurch gesetzliche Anti-Dumping-Vorschriften nach dem UWG verletzt.',
+          'Annehmen, allerdings müssen die Fixkosten anteilig auf den Neukunden umgelegt werden.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Da noch freie Kapazitäten vorhanden sind (1.500 - 1.000 = 500 freie Einheiten) und keine Fixkosten remanent steigen, gilt: Solange p > kv (105 € > 80 €), erwirtschaftet das Produkt einen positiven Deckungsbeitrag (db = 25 €/Stk.). Bei 300 Stück ergibt sich ein zusätzlicher Deckungsbeitrag von 300 * 25 € = 7.500 €, der den Unternehmensgewinn 1:1 erhöht.',
+        tip: 'In KLR-Klausuren gilt: Kurzfristige Preisuntergrenze = variable Stückkosten (kv). Liegt der Preis darüber und bestehen freie Kapazitäten, ist der Zusatzauftrag vorteilhaft.'
+      },
+      {
+        domain: 'WBQ: Volks- und Betriebswirtschaft',
+        examTime: '75 Min. Fach',
+        scenario: 'In einer Volkswirtschaft steigen die Verbraucherpreise im Jahresvergleich um 7,2 % (starke Inflation). Die Europäische Zentralbank (EZB) beschließt, den Leitzins um 150 Basispunkte anzuheben.',
+        question: 'Über welchen Wirkungsmechanismus soll dieser Zinspolitikschritt die Inflationsrate dämpfen?',
+        options: [
+          'Höhere Zinsen verbilligen Kredite für Unternehmen, was das Angebot an Konsumgütern schlagartig vergrößert.',
+          'Höhere Leitzinsen verteuern Kredite für Geschäftsbanken und Endkunden, was Investitionen und Konsumnachfrage bremst und den Preisdruck mindert.',
+          'Höhere Leitzinsen führen zu einer automatischen Abwertung der Heimatwährung, wodurch Importe günstiger werden.',
+          'Die EZB druckt durch die Zinserhöhung mehr Zentralbankgeld und kauft damit Staatsanleihen auf.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Eine restriktive Geldpolitik (Leitzinserhöhung) verteuert die Refinanzierung der Geschäftsbanken. Kreditzinsen für Unternehmen und Verbraucher steigen, Sparanreize nehmen zu, Investitionen und Konsum sinken. Die gesamtwirtschaftliche Nachfrage kühlt sich ab, wodurch Unternehmen Preiserhöhungen schwerer durchsetzen können.',
+        tip: 'Merken Sie sich das Magische Viereck: Zwischen Preisniveaustabilität und hohem Beschäftigungsstand besteht kurzfristig oft ein Zielkonflikt (Phillips-Kurve).'
+      },
+      {
+        domain: 'WBQ: Unternehmensführung',
+        examTime: '90 Min. Fach',
+        scenario: 'Ein Produktionsunternehmen verzeichnet zunehmende Unruhe und Fluktuation unter den Facharbeitern. Die Geschäftsleitung beschließt, die Gehälter aller Arbeiter pauschal um 8 % zu erhöhen und die Kantinenzuschüsse zu verdoppeln. Drei Monate später stellt die Personalleitung fest, dass die Arbeitsmotivation und die Fehlerquote unverändert geblieben sind.',
+        question: 'Wie erklärt sich dieser Befund nach der Zwei-Faktoren-Theorie von Frederick Herzberg?',
+        options: [
+          'Gehalt und Arbeitsplatzbedingungen sind Motivatoren, die erst nach mindestens 12 Monaten verhaltenswirksam werden.',
+          'Gehalt und Zusatzleistungen sind Hygienefaktoren; ihre Verbesserung verhindert lediglich Unzufriedenheit, stiftet aber keine dauerhafte Motivation oder Leistungsbereitschaft.',
+          'Arbeiter lassen sich grundsätzlich nur durch autoritäre Führungsmaßnahmen und strenge Kontrollen motivieren (Theorie X).',
+          'Nach Herzberg wirkt nur eine Arbeitszeitverkürzung motivierend auf gewerbliche Arbeitnehmer.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Frederick Herzberg unterscheidet strikt zwischen Hygienefaktoren (z.B. Entlohnung, Arbeitsplatzsicherheit, Unternehmenspolitik, Arbeitsbedingungen) und echten Motivatoren (z.B. Anerkennung, Verantwortung, Arbeitsinhalte, persönliche Entwicklung). Werden Hygienefaktoren verbessert, beseitigt man Unzufriedenheit (Zustand: Nicht-unzufrieden), erzeugt aber noch keine Leistungsfreude.',
+        tip: 'Häufige IHK-Falle: Verwechseln Sie Herzbergs Zwei-Faktoren-Modell nicht mit der Maslowschen Bedürfnishierarchie!'
+      },
+      {
+        domain: 'HSQ: Logistik & Materialwirtschaft',
+        examTime: 'In Situationsaufgabe 2',
+        scenario: 'Für ein Gehäuseteil benötigt die Präzisionsteile GmbH 9.000 Stück pro Jahr. Die festen Bestellkosten betragen 120 € pro Bestellvorgang. Der Einstandspreis liegt bei 50 € je Stück, der Lagerhaltungskostensatz bei 12 % p.a.',
+        question: 'Wie hoch ist die optimale Bestellmenge nach der Andlerschen Formel?',
+        options: [
+          'ca. 180 Stück',
+          'ca. 600 Stück',
+          'ca. 1.200 Stück',
+          'ca. 3.000 Stück'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2 (600 Stück):</strong><br>Andlersche Formel: $x_{opt} = \\sqrt{\\frac{200 \\cdot B \\cdot K_b}{p \\cdot q}}$<br>Eingesetzt: $x_{opt} = \\sqrt{\\frac{200 \\cdot 9.000 \\cdot 120}{50 \\cdot 12}} = \\sqrt{\\frac{216.000.000}{600}} = \\sqrt{360.000} = 600\\text{ Stück}$.',
+        tip: 'IHK-Rechenregel: Setzen Sie den Lagerhaltungskostensatz q als ganze Zahl ein (hier 12, nicht 0,12), wenn Sie im Zähler mit dem Faktor 200 rechnen!'
+      },
+      {
+        domain: 'HSQ: Investition & Finanzierung',
+        examTime: 'In Situationsaufgabe 2',
+        scenario: 'Die Geschäftsführung soll zwischen zwei Fertigungsanlagen (Anlage Alpha und Anlage Beta) entscheiden. Der interne Zinsfuß (IRR) von Anlage Alpha beträgt 12 %, der von Anlage Beta 14 %. Der marktübliche Kalkulationszinssatz des Unternehmens liegt bei 8 %.',
+        question: 'Welche Aussage zur Vorteilhaftigkeit ist betriebswirtschaftlich korrekt?',
+        options: [
+          'Beide Anlagen sind absolut unrentabel, da der interne Zinsfuß über dem Kalkulationszinsfuß liegt.',
+          'Beide Investitionen sind vorteilhaft, da ihr interner Zinsfuß über dem geforderten Mindestzins liegt; im relativen Vergleich ist Anlage Beta vorzuziehen.',
+          'Der interne Zinsfuß ist bei Sachinvestitionen grundsätzlich nicht aussagekräftig, es muss immer die statische Kostenvergleichsrechnung herangezogen werden.',
+          'Anlage Alpha ist vorzuziehen, da eine niedrigere Rendite ein geringeres Unternehmensrisiko impliziert.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Der interne Zinsfuß ist derjenige Diskontierungszins, bei dem der Kapitalwert der Investition genau null wird. Ist der IRR größer als der Kalkulationszinssatz (hier 12 % bzw. 14 % > 8 %), erwirtschaftet die Investition eine Überrendite gegenüber der Kapitalmarkt-Alternative. Anlage Beta bietet die höhere Rendite.',
+        tip: 'Vorsicht bei Wiederanlageprämisse: Die interne Zinsfußmethode unterstellt, dass freiwerdende Mittel zum internen Zinsfuß wiederangelegt werden können.'
+      },
+      {
+        domain: 'HSQ: Betriebliches Management (Strategie)',
+        examTime: 'In Situationsaufgabe 1',
+        scenario: 'In einer Portfolio-Analyse nach der Boston Consulting Group (BCG) weist ein innovatives Produkt der Medizintechnik AG einen hohen relativen Marktanteil in einem überdurchschnittlich stark wachsenden Zukunftsmarkt auf.',
+        question: 'Welcher Normstrategie und welchem Feld der BCG-Matrix ist dieses Produkt zuzuordnen?',
+        options: [
+          'Cash Cow – Normstrategie: Abschöpfung & Gewinnmaximierung ohne Neuinvestitionen.',
+          'Poor Dog – Normstrategie: Deinvestition und geordneter Marktaustritt.',
+          'Star – Normstrategie: Investition & Wachstum zur Festigung der Marktführerschaft.',
+          'Question Mark – Normstrategie: Selektive Desinvestition.'
+        ],
+        correct: 2,
+        feedback: '<strong>Richtig ist Antwort 3 (Star):</strong> Hoher relativer Marktanteil + hohes Marktwachstum = Star. Diese Produkte erwirtschaften zwar hohe Gewinne, benötigen aber erhebliche Reinvestitionen zur Finanzierung des Marktwachstums und zur Verteidigung der Marktposition.',
+        tip: 'Lebenszyklus der BCG-Matrix im Uhrzeigersinn: Question Mark (Einführung) → Star (Wachstum) → Cash Cow (Reife/Sättigung) → Poor Dog (Degeneration).'
+      },
+      {
+        domain: 'HSQ: Marketing und Vertrieb',
+        examTime: 'In Situationsaufgabe 1 & 2',
+        scenario: 'Ein Softwarehersteller vertreibt sein ERP-System in drei Varianten: Für Studenten für 49 €/Jahr (unter Vorlage des Studienausweises), für KMU für 590 €/Jahr und für Großkonzerne für 2.900 €/Jahr mit erweitertem Support.',
+        question: 'Welche Form der Preisdifferenzierung wendet das Unternehmen hier primär an?',
+        options: [
+          'Räumliche Preisdifferenzierung',
+          'Personelle und leistungsbezogene Preisdifferenzierung',
+          'Zeitliche Preisdifferenzierung (Yield Management)',
+          'Verdeckte Preiserhöhung durch Skimming'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 1:</strong> Die Differenzierung nach Kundengruppen (Studenten vs. KMU) ist eine personelle Preisdifferenzierung. Die Abstufung nach Funktionsumfang und Support-Level für Konzerne stellt eine qualitative/leistungsbezogene Preisdifferenzierung dar.',
+        tip: 'Systematik der Preisdifferenzierung: Räumlich (Inland/Ausland), zeitlich (Tag-/Nachttarif), personell (Student/Senior), mengenmäßig (Mengenrabatt), sachlich/verwendungsbezogen (Gewerbe-/Privatstrom).'
+      },
+      {
+        domain: 'HSQ: Führung und Zusammenarbeit',
+        examTime: 'Mündliche Prüfung & Situationsaufgabe 1',
+        scenario: 'Ein neu zusammengestelltes Projektteam zur Einführung eines Warenwirtschaftssystems arbeitet seit vier Wochen zusammen. Nach anfänglicher Höflichkeit häufen sich plötzlich Reibereien um Zuständigkeiten, gegenseitige Schuldzuweisungen bei Fehlern und offene Machtkämpfe um die inoffizielle Führungsrolle.',
+        question: 'In welcher Phase der Teamentwicklung nach Bruce Tuckman befindet sich das Team, und welche Führungsintervention ist jetzt geboten?',
+        options: [
+          'Norming-Phase: Die Führungskraft sollte sich komplett zurückziehen und das Team sich selbst überlassen.',
+          'Storming-Phase: Die Führungskraft muss als Schlichter und Moderator auftreten, Konflikte offen ansprechen, Rollen schärfen und verbindliche Spielregeln vereinbaren.',
+          'Performing-Phase: Die Führungskraft sollte die Aufgaben sofort delegieren und Termindruck erhöhen.',
+          'Adjourning-Phase: Das Projekt ist gescheitert und das Team muss unverzüglich aufgelöst werden.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2 (Storming):</strong> Auf das anfängliche Abtasten (Forming) folgt unweigerlich das "Stürmen" (Storming), in dem Rollen, Machtansprüche und Prioritäten ausgefochten werden. Die Führungskraft darf diese Phase nicht unterdrücken, sondern muss durch Moderation, Klärung von Zuständigkeiten und Festlegung von Kooperationsregeln den Übergang in die Norming-Phase unterstützen.',
+        tip: 'In der mündlichen Prüfung ein absoluter Klassiker: Stellen Sie dar, dass Konflikte im Team kein persönliches Versagen sind, sondern eine notwendige Entwicklungsstufe!'
+      },
+      {
+        domain: 'HSQ: Führung und Zusammenarbeit',
+        examTime: 'Mündliche Prüfung (Situatives Führen)',
+        scenario: 'Frau Huber, eine seit 10 Jahren hochkompetente und stets eigenverantwortlich arbeitende Bilanzbuchhalterin (hohe fachliche Kompetenz, hohe Motivation), soll die Umstellung auf elektronische Rechnungsstellung leiten. Der neue Finanzleiter kontrolliert sie täglich dreimal persönlich im Büro und verlangt für jeden Arbeitsschritt eine schriftliche Genehmigung.',
+        question: 'Welcher Führungsfehler nach dem Reifegradmodell von Hersey & Blanchard liegt hier vor?',
+        options: [
+          'Unterlassene Fürsorgepflicht, da die Mitarbeiterin mit der Aufgabe allein gelassen wird.',
+          'Übersteuerung (Under-Delegation): Eine Mitarbeiterin der Reifegradstufe R4 (kompetent & motiviert) wird mit dem Führungsstil S1 (Dirigieren/Unterweisen) geführt, was zu Frustration und Demotivation führt.',
+          'Völlig korrekter Führungsstil, da bei Projektumstellungen grundsätzlich nur autokratisch geführt werden darf.',
+          'Der Vorgesetzte wendet den kooperativen Laissez-faire-Stil fehlerhaft an.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Nach Paul Hersey und Ken Blanchard erfordert Reifegrad R4 (Mitarbeiter kann und will die Aufgabe lösen) den Führungsstil S4: Delegieren (Freiräume geben, Vertrauen schenken, Zielvereinbarungen statt Mikromanagement). Ein dirigierendes Verhalten (S1) wirkt bei hochqualifizierten Kräften extrem demotivierend.',
+        tip: 'Für das IHK-Fachgespräch: Nennen Sie immer das Begriffspaar "Kompetenz und Wollen" bei der Reifegradbestimmung.'
+      },
+      {
+        domain: 'WBQ: Recht und Steuern (Arbeitsrecht)',
+        examTime: '75 Min. Fach',
+        scenario: 'Ein Arbeitgeber in einem Betrieb mit 45 Beschäftigten kündigt einem Mitarbeiter nach 6 Jahren Betriebszugehörigkeit fristlos wegen wiederholten Zuspätkommens. Eine vorherige Abmahnung wegen Zuspätkommens wurde nicht ausgesprochen.',
+        question: 'Wie ist die Rechtslage bezüglich dieser Kündigung nach dem BGB und KSchG?',
+        options: [
+          'Die fristlose Kündigung ist sofort wirksam, da Pünktlichkeit eine vertragliche Hauptpflicht darstellt.',
+          'Die fristlose Kündigung (§ 626 BGB) ist unwirksam, da bei verhaltensbedingten Pflichtverletzungen im Leistungsbereich zwingend eine vorherige einschlägige Abmahnung erforderlich ist.',
+          'In Betrieben über 20 Beschäftigten dürfen fristlose Kündigungen nur nach Zustimmung des Arbeitsgerichts ausgesprochen werden.',
+          'Die Kündigung wandelt sich automatisch in eine betriebsbedingte Kündigung mit 6-monatiger Frist um.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Eine außerordentliche fristlose Kündigung aus wichtigem Grund (§ 626 BGB) setzt voraus, dass dem Arbeitgeber die Fortsetzung des Arbeitsverhältnisses bis zum Ablauf der ordentlichen Kündigungsfrist unzumutbar ist. Bei steuerbarem Fehlverhalten (wie Verspätungen) greift das Verhältnismäßigkeitsprinzip (Ultima-Ratio-Prinzip): Es muss zwingend zuvor eine wirksame Abmahnung erteilt worden sein, um dem Arbeitnehmer die Chance zur Verhaltensänderung zu geben.',
+        tip: 'Prüfungsfolge bei Kündigungen: 1. Anwendbarkeit KSchG (§ 1, § 23) prüfen, 2. Kündigungsgrund (personen-, verhaltens- oder betriebsbedingt), 3. Bei verhaltensbedingt: Abmahnung vorhanden? 4. Interessenabwägung.'
+      },
+      {
+        domain: 'HSQ: Führung und Zusammenarbeit (Präsentation)',
+        examTime: 'Mündliche Prüfung (Präsentationsaufgabe)',
+        scenario: 'In der 10-minütigen mündlichen Präsentation zum Thema "Einführung eines betrieblichen Vorschlagswesens" nutzt der Prüfling alle 30 Minuten der Vorbereitung, um ein Flipchart vollständig mit reinem Fließtext (schwarze Schriftgröße 12) vollzuschreiben. Er liest die Präsentation mit dem Rücken zum Prüfungsausschuss vom Flipchart ab.',
+        question: 'Welches Feedback und welche Notentendenz wird der Prüfungsausschuss für diese Präsentationsleistung vergeben?',
+        options: [
+          'Hervorragend (Note 1), weil durch den vielen Fließtext die fachliche Tiefe unmissverständlich belegt wurde.',
+          'Sehr mangelhaft: Verletzung wesentlicher Präsentationsgrundsätze (keine Visualisierung durch Struktur/Farben/Symbole, reines Ablesen, fehlender Blickkontakt/Interaktion mit den Prüfern).',
+          'Der Prüfungsausschuss bewertet nur die Fachinhalte, die visuelle Gestaltung des Flipcharts spielt nach IHK-Vorschriften keine Rolle.',
+          'Präsentationen mit dem Rücken zu den Prüfern werden sofort mit 0 Punkten abgebrochen.'
+        ],
+        correct: 1,
+        feedback: '<strong>Richtig ist Antwort 2:</strong> Die Präsentation macht 1/3 der mündlichen Prüfung aus. Bewertungskriterien sind neben der Fachlichkeit zwingend: Medienkompetenz (Lesbarkeit, Einsatz von Moderationskarten/Signalfarben), Struktur (Roter Faden) und Rhetorik (freier Vortrag, Blickkontakt, Körpersprache). Reines Ablesen von Textwüsten führt zu drastischem Punktabzug.',
+        tip: 'Flipchart-Regel im Fachgespräch: Maximal 15–20 Wörter pro Seite! Nutzen Sie Stichpunkte, Kärtchen, Kastenstrukturen und Icons (z.B. Zielscheibe für Ziele, Ausrufezeichen für Risiken).'
+      }
+    ];
+
+    /* ==========================================================================
+       CHECKLIST DATA MODEL (12 Exam Milestones)
+       ========================================================================== */
+    const CHECKLIST_DATA = [
+      {
+        id: 0,
+        title: 'Zulassungsvoraussetzungen mit der IHK prüfen & fristgerecht anmelden',
+        desc: 'Nachweis einer kaufmännischen Ausbildung oder entsprechender Berufspraxis. Anmeldefristen bei der zuständigen IHK beachten (meist 3–4 Monate vor der Prüfung!).'
+      },
+      {
+        id: 1,
+        title: 'Gesetzestexte in aktueller Auflage beschaffen & vorschriftsmäßig präparieren',
+        desc: 'BGB, HGB, Arbeitsgesetze, Steuergesetze (EStG, KStG, GewStG, UStG, AO). Nur amtliche Reiter mit Gesetzesnamen/Paragraphen anbringen; keine handschriftlichen Notizen/Glossen!'
+      },
+      {
+        id: 2,
+        title: 'Offizielle DIHK-Formelsammlung für Fortbildungsprüfungen beschaffen & durcharbeiten',
+        desc: 'Verinnerlichen Sie die exakten Bezeichnungen und Notationen (z.B. in der KLR und Investitionsrechnung). Eigene Formelsammlungen sind nicht zugelassen.'
+      },
+      {
+        id: 3,
+        title: 'Zugelassenen, unprogrammierbaren Taschenrechner beschaffen & prüfen',
+        desc: 'Netzunabhängig, nicht kommunikationsfähig, kein Textspeicher. Neue Batterien rechtzeitig vor dem Klausurtag einsetzen.'
+      },
+      {
+        id: 4,
+        title: 'WBQ Fächer 1 bis 4 systematisch erarbeiten (VWL/BWL, Rewe, Recht, UF)',
+        desc: 'Schwerpunkte auf Buchungssätze, KLR-Kalkulationen, BGB/HGB-Fallgutachten und Organisationsformen legen.'
+      },
+      {
+        id: 5,
+        title: 'Mindestens 3 frühere Original-WBQ-Klausuren unter realen Zeitbedingungen schreiben',
+        desc: 'Zeiten strikt einhalten (75 bzw. 90 Minuten). So trainieren Sie die Formulierungsschnelligkeit und das Auffinden von Paragraphen.'
+      },
+      {
+        id: 6,
+        title: 'Berufspraxis-Nachweis für die Zulassung zur HSQ-Teilprüfung einreichen',
+        desc: 'Für die HSQ ist das Ablegen der WBQ sowie mindestens ein weiteres Jahr qualifizierte Berufspraxis mit Fachwirt-Bezug nachzuweisen.'
+      },
+      {
+        id: 7,
+        title: 'HSQ Situationsaufgaben 1 & 2 simulieren (Dauerstress-Training: 2 x 240 Min.)',
+        desc: 'Üben Sie das vernetzte Denken über mehrere Handlungsbereiche hinweg (z.B. Logistik-Entscheidung mit Auswirkung auf KLR und Personal).'
+      },
+      {
+        id: 8,
+        title: 'Zeitmanagement 2,4 Minuten pro Punkt verinnerlichen',
+        desc: 'Bei den 240-Minuten-Situationsaufgaben: 15 Minuten Einlesezeit, Punktzahl x 2,4 Min. für jede Teilaufgabe, 20 Minuten Pufferzeit für den Abschluss.'
+      },
+      {
+        id: 9,
+        title: '30-Minuten-Vorbereitungsphase für die mündliche Prüfung trainieren',
+        desc: 'Gestaltung von Flipcharts mit Moderationskarten, Kastenstrukturen und Signalfarben innerhalb des engen 30-Minuten-Fensters mindestens 3-mal real üben.'
+      },
+      {
+        id: 10,
+        title: '10-Minuten-Präsentationsvortrag mit Stoppuhr trainieren',
+        desc: 'Freies Sprechen üben, Blickkontakt halten, Einstiegssatz und Schlussappell auswendig beherrschen. Zeitlimit von 10 Minuten niemals überschreiten!'
+      },
+      {
+        id: 11,
+        title: 'Prüfungs-Notfallpaket & Anreise zum Prüfungsort organisieren',
+        desc: 'Einladungsschreiben, Personalausweis, Ersatzstifte (Dokumentenecht, kein Bleistift/Rotstift), Lineal, Gesetzestexte, Wasser & Traubenzucker.'
+      }
+    ];
+
+    /* ==========================================================================
+       APP STATE & PERSISTENCE
+       ========================================================================== */
+    let appState = {
+      activeTab: 'curriculum',
+      completedTopics: {},
+      quizAnswers: {},
+      currentQuizIndex: 0,
+      calcWBQ: { vwl: 70, rewe: 65, recht: 58, uf: 74, ergOral: 65 },
+      calcHSQ: { sa1: 72, sa2: 68, pres: 78, oral: 82 },
+      checklistDone: {}
+    };
+
+    let currentCurriculumFilter = 'all';
+    let currentCurriculumSearch = '';
+
+    // Initialize application
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadStoredState();
+      renderCurriculum();
+      initQuiz();
+      updateCalculator();
+      renderChecklist();
+      updateGlobalProgress();
+      
+      // Notify parent app if API available
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    });
+
+    async function loadStoredState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+          const saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            appState = Object.assign(appState, saved);
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load app state from notebookAppApi:', e);
+      }
+    }
+
+    async function persistState() {
+      try {
+        if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+          await window.notebookAppApi.setAppState(appState);
+        }
+      } catch (e) {
+        console.warn('Could not persist app state:', e);
+      }
+    }
+
+    /* ==========================================================================
+       TAB SWITCHING
+       ========================================================================== */
+    function switchTab(tabId) {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      tabPanels.forEach(panel => {
+        panel.classList.remove('active');
+      });
+
+      const selectedBtn = document.getElementById(`tab-${tabId}`);
+      const selectedPanel = document.getElementById(`panel-${tabId}`);
+
+      if (selectedBtn) {
+        selectedBtn.classList.add('active');
+        selectedBtn.setAttribute('aria-selected', 'true');
+      }
+      if (selectedPanel) {
+        selectedPanel.classList.add('active');
+      }
+
+      appState.activeTab = tabId;
+      persistState();
+    }
+
+    /* ==========================================================================
+       CURRICULUM MODULE
+       ========================================================================== */
+    function renderCurriculum() {
+      const container = document.getElementById('curriculumList');
+      if (!container) return;
+
+      container.innerHTML = '';
+      let totalVisible = 0;
+      let totalCompleted = 0;
+
+      // Filter data
+      CURRICULUM_DATA.forEach(subject => {
+        if (currentCurriculumFilter === 'wbq' && subject.part !== 'wbq') return;
+        if (currentCurriculumFilter === 'hsq' && subject.part !== 'hsq') return;
+
+        // Filter topics by search and open status
+        const filteredTopics = subject.topics.filter(topic => {
+          const isDone = !!appState.completedTopics[topic.id];
+          if (currentCurriculumFilter === 'open' && isDone) return false;
+
+          if (!currentCurriculumSearch) return true;
+          const q = currentCurriculumSearch.toLowerCase();
+          return (
+            topic.id.toLowerCase().includes(q) ||
+            topic.title.toLowerCase().includes(q) ||
+            topic.desc.toLowerCase().includes(q) ||
+            (topic.laws && topic.laws.some(l => l.toLowerCase().includes(q)))
+          );
+        });
+
+        if (filteredTopics.length === 0) return;
+
+        totalVisible += filteredTopics.length;
+
+        // Subject Block
+        const block = document.createElement('div');
+        block.className = 'subject-block';
+
+        // Subject Header
+        const header = document.createElement('div');
+        header.className = 'subject-header';
+        header.innerHTML = `
+          <div class="subject-title">
+            <span class="step-badge">${subject.part === 'wbq' ? 'WQ' : 'HQ'}</span>
+            <span>${subject.subjectTitle}</span>
+          </div>
+          <div>
+            <span class="badge ${subject.part === 'wbq' ? 'badge-primary' : 'badge-navy'}">
+              <i class="ph ph-clock" aria-hidden="true"></i> ${subject.examTime}
+            </span>
+          </div>
+        `;
+        block.appendChild(header);
+
+        // Topics List
+        const list = document.createElement('div');
+        list.className = 'topic-list';
+
+        filteredTopics.forEach(topic => {
+          const isChecked = !!appState.completedTopics[topic.id];
+          if (isChecked) totalCompleted++;
+
+          const item = document.createElement('div');
+          item.className = `topic-item ${isChecked ? 'completed' : ''}`;
+          item.id = `topic-item-${topic.id}`;
+
+          const lawsTagsHtml = topic.laws.map(law => `<span class="tag-law">${law}</span>`).join(' ');
+
+          item.innerHTML = `
+            <div class="topic-checkbox-wrap">
+              <label for="check-${topic.id}" style="display:none;">Thema ${topic.id} erledigt</label>
+              <input type="checkbox" id="check-${topic.id}" class="topic-checkbox" ${isChecked ? 'checked' : ''} onchange="toggleTopicComplete('${topic.id}', this.checked)">
+            </div>
+            <div class="topic-details">
+              <div class="topic-header-row">
+                <span class="topic-code">Lernfeld ${topic.id}</span>
+                <span class="topic-name">${topic.title}</span>
+                <span class="badge" style="font-size: 0.7rem;">${topic.examType}</span>
+              </div>
+              <p class="topic-summary">${topic.desc}</p>
+              <div class="topic-laws-tags">
+                ${lawsTagsHtml}
+              </div>
+            </div>
+            <div>
+              <button class="topic-expand-btn" id="btn-expand-${topic.id}" onclick="toggleTopicDrawer('${topic.id}')" aria-expanded="false" aria-controls="drawer-${topic.id}">
+                Details <i class="ph ph-caret-down" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="topic-drawer" id="drawer-${topic.id}">
+              <div style="font-weight: 700; color: var(--primary); margin-bottom: 4px;">
+                <i class="ph-bold ph-lightbulb" aria-hidden="true"></i> IHK-Prüfertipp & Praxiswissen:
+              </div>
+              <p style="margin-bottom: 8px;">${topic.tip}</p>
+              <div style="font-size: 0.8rem; color: var(--on-surface-variant);">
+                <strong>Schlüsselparagraphen & Werkzeuge:</strong> ${topic.laws.join(' • ')}
+              </div>
+            </div>
+          `;
+          list.appendChild(item);
+        });
+
+        block.appendChild(list);
+        container.appendChild(block);
+      });
+
+      // Update counters
+      const countVis = document.getElementById('countVisibleTopics');
+      const countDone = document.getElementById('countDoneTopics');
+      if (countVis) countVis.textContent = totalVisible;
+      if (countDone) countDone.textContent = Object.keys(appState.completedTopics).length;
+
+      updateGlobalProgress();
+    }
+
+    function toggleTopicComplete(topicId, isChecked) {
+      if (isChecked) {
+        appState.completedTopics[topicId] = true;
+      } else {
+        delete appState.completedTopics[topicId];
+      }
+
+      const itemEl = document.getElementById(`topic-item-${topicId}`);
+      if (itemEl) {
+        if (isChecked) {
+          itemEl.classList.add('completed');
+        } else {
+          itemEl.classList.remove('completed');
+        }
+      }
+
+      const countDone = document.getElementById('countDoneTopics');
+      if (countDone) countDone.textContent = Object.keys(appState.completedTopics).length;
+
+      updateGlobalProgress();
+      persistState();
+    }
+
+    function toggleTopicDrawer(topicId) {
+      const drawer = document.getElementById(`drawer-${topicId}`);
+      const btn = document.getElementById(`btn-expand-${topicId}`);
+      if (!drawer || !btn) return;
+
+      const isOpen = drawer.classList.contains('open');
+      if (isOpen) {
+        drawer.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.innerHTML = `Details <i class="ph ph-caret-down" aria-hidden="true"></i>`;
+      } else {
+        drawer.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.innerHTML = `Schließen <i class="ph ph-caret-up" aria-hidden="true"></i>`;
+      }
+    }
+
+    function filterCurriculum(filter) {
+      currentCurriculumFilter = filter;
+      document.querySelectorAll('.filter-pills .pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`filter-${filter}`);
+      if (activeBtn) activeBtn.classList.add('active');
+      renderCurriculum();
+    }
+
+    function searchCurriculum(val) {
+      currentCurriculumSearch = val.trim();
+      renderCurriculum();
+    }
+
+    function clearCurriculumSearch() {
+      const inp = document.getElementById('curriculumSearch');
+      if (inp) inp.value = '';
+      currentCurriculumSearch = '';
+      renderCurriculum();
+    }
+
+    /* ==========================================================================
+       QUIZ MODULE
+       ========================================================================== */
+    function initQuiz() {
+      renderQuizNav();
+      renderCurrentQuiz();
+      updateQuizStats();
+    }
+
+    function renderQuizNav() {
+      const navGrid = document.getElementById('quizNavGrid');
+      if (!navGrid) return;
+      navGrid.innerHTML = '';
+
+      QUIZ_QUESTIONS.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-nav-btn';
+        btn.id = `quiz-nav-${idx}`;
+        btn.textContent = idx + 1;
+        btn.onclick = () => jumpToQuiz(idx);
+
+        if (idx === appState.currentQuizIndex) {
+          btn.classList.add('active');
+        }
+
+        const userAns = appState.quizAnswers[idx];
+        if (userAns !== undefined) {
+          if (userAns === q.correct) {
+            btn.classList.add('correct');
+          } else {
+            btn.classList.add('incorrect');
+          }
+        }
+
+        navGrid.appendChild(btn);
+      });
+    }
+
+    function renderCurrentQuiz() {
+      const idx = appState.currentQuizIndex;
+      const q = QUIZ_QUESTIONS[idx];
+      if (!q) return;
+
+      const badgeDomain = document.getElementById('quizBadgeDomain');
+      const badgeTime = document.getElementById('quizBadgeTime');
+      const qCounter = document.getElementById('quizQuestionCounter');
+      const scenarioBox = document.getElementById('quizScenarioBox');
+      const qTitle = document.getElementById('quizQuestionTitle');
+      const optionsForm = document.getElementById('quizOptionsForm');
+      const feedbackBox = document.getElementById('quizFeedbackBox');
+      const btnSubmit = document.getElementById('btnSubmitQuiz');
+      const btnPrev = document.getElementById('btnPrevQuiz');
+      const btnNext = document.getElementById('btnNextQuiz');
+
+      if (badgeDomain) badgeDomain.textContent = q.domain;
+      if (badgeTime) badgeTime.textContent = q.examTime;
+      if (qCounter) qCounter.textContent = `Aufgabe ${idx + 1} von ${QUIZ_QUESTIONS.length}`;
+      if (scenarioBox) scenarioBox.innerHTML = `<strong>Ausgangssituation:</strong> ${q.scenario}`;
+      if (qTitle) qTitle.textContent = q.question;
+
+      // Options
+      if (optionsForm) {
+        optionsForm.innerHTML = '';
+        const answeredVal = appState.quizAnswers[idx];
+
+        q.options.forEach((optText, optIdx) => {
+          const label = document.createElement('label');
+          label.className = 'quiz-option-label';
+          label.id = `opt-label-${optIdx}`;
+
+          const isSelected = answeredVal === optIdx;
+
+          // If already answered, colorize
+          if (answeredVal !== undefined) {
+            if (optIdx === q.correct) {
+              label.classList.add('correct-answer');
+            } else if (isSelected && optIdx !== q.correct) {
+              label.classList.add('wrong-answer');
+            }
+          }
+
+          label.innerHTML = `
+            <input type="radio" name="quizOpt" value="${optIdx}" ${isSelected ? 'checked' : ''} ${answeredVal !== undefined ? 'disabled' : ''}>
+            <span>${optText}</span>
+          `;
+          optionsForm.appendChild(label);
+        });
+      }
+
+      // Feedback Box
+      if (feedbackBox) {
+        const answeredVal = appState.quizAnswers[idx];
+        if (answeredVal !== undefined) {
+          const isRight = answeredVal === q.correct;
+          feedbackBox.className = `quiz-feedback show ${isRight ? 'callout-positive' : 'callout-error'}`;
+          feedbackBox.innerHTML = `
+            <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+              <i class="ph-bold ${isRight ? 'ph-check-circle' : 'ph-x-circle'}" aria-hidden="true"></i>
+              ${isRight ? 'Hervorragend! Richtige Antwort.' : 'Nicht ganz korrekt.'}
+            </div>
+            <div>${q.feedback}</div>
+            <div style="margin-top: 8px; font-size: 0.85rem; font-weight: 700; color: var(--tertiary);">
+              💡 ${q.tip}
+            </div>
+          `;
+          if (btnSubmit) btnSubmit.style.display = 'none';
+        } else {
+          feedbackBox.className = 'quiz-feedback';
+          feedbackBox.innerHTML = '';
+          if (btnSubmit) btnSubmit.style.display = 'inline-flex';
+        }
+      }
+
+      if (btnPrev) btnPrev.disabled = (idx === 0);
+      if (btnNext) btnNext.disabled = (idx === QUIZ_QUESTIONS.length - 1);
+
+      renderQuizNav();
+    }
+
+    function submitQuizAnswer() {
+      const idx = appState.currentQuizIndex;
+      const q = QUIZ_QUESTIONS[idx];
+      const selected = document.querySelector('input[name="quizOpt"]:checked');
+
+      if (!selected) {
+        alert('Bitte wählen Sie zuerst eine Antwortoption aus.');
+        return;
+      }
+
+      const answerIdx = parseInt(selected.value, 10);
+      appState.quizAnswers[idx] = answerIdx;
+
+      renderCurrentQuiz();
+      updateQuizStats();
+      persistState();
+    }
+
+    function prevQuizQuestion() {
+      if (appState.currentQuizIndex > 0) {
+        appState.currentQuizIndex--;
+        renderCurrentQuiz();
+      }
+    }
+
+    function nextQuizQuestion() {
+      if (appState.currentQuizIndex < QUIZ_QUESTIONS.length - 1) {
+        appState.currentQuizIndex++;
+        renderCurrentQuiz();
+      }
+    }
+
+    function jumpToQuiz(idx) {
+      appState.currentQuizIndex = idx;
+      renderCurrentQuiz();
+    }
+
+    function resetQuiz() {
+      if (confirm('Möchten Sie alle Antworten des Quiz zurücksetzen?')) {
+        appState.quizAnswers = {};
+        appState.currentQuizIndex = 0;
+        initQuiz();
+        persistState();
+      }
+    }
+
+    function updateQuizStats() {
+      let correct = 0;
+      const totalAnswered = Object.keys(appState.quizAnswers).length;
+
+      Object.entries(appState.quizAnswers).forEach(([idx, val]) => {
+        if (QUIZ_QUESTIONS[idx] && val === QUIZ_QUESTIONS[idx].correct) {
+          correct++;
+        }
+      });
+
+      const scoreEl = document.getElementById('quizScoreCorrect');
+      const rateEl = document.getElementById('quizSuccessRate');
+      const totalEl = document.getElementById('quizTotalCount');
+
+      if (scoreEl) scoreEl.textContent = correct;
+      if (totalEl) totalEl.textContent = QUIZ_QUESTIONS.length;
+      if (rateEl) {
+        const pct = totalAnswered > 0 ? Math.round((correct / totalAnswered) * 100) : 0;
+        rateEl.textContent = `${pct}%`;
+      }
+    }
+
+    /* ==========================================================================
+       CALCULATOR MODULE (WBQ, Oral Ergänzungsprüfung & HSQ Final Grade)
+       ========================================================================== */
+    function syncCalcInput(field, val) {
+      const numVal = Math.min(100, Math.max(0, parseInt(val, 10) || 0));
+
+      if (field === 'vwl') {
+        appState.calcWBQ.vwl = numVal;
+        const s = document.getElementById('inputVwl');
+        const n = document.getElementById('numVwl');
+        const l = document.getElementById('labelValVwl');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'rewe') {
+        appState.calcWBQ.rewe = numVal;
+        const s = document.getElementById('inputRewe');
+        const n = document.getElementById('numRewe');
+        const l = document.getElementById('labelValRewe');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'recht') {
+        appState.calcWBQ.recht = numVal;
+        const s = document.getElementById('inputRecht');
+        const n = document.getElementById('numRecht');
+        const l = document.getElementById('labelValRecht');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'uf') {
+        appState.calcWBQ.uf = numVal;
+        const s = document.getElementById('inputUf');
+        const n = document.getElementById('numUf');
+        const l = document.getElementById('labelValUf');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'sa1') {
+        appState.calcHSQ.sa1 = numVal;
+        const s = document.getElementById('inputHsqSa1');
+        const n = document.getElementById('numHsqSa1');
+        const l = document.getElementById('labelValHsqSa1');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'sa2') {
+        appState.calcHSQ.sa2 = numVal;
+        const s = document.getElementById('inputHsqSa2');
+        const n = document.getElementById('numHsqSa2');
+        const l = document.getElementById('labelValHsqSa2');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'pres') {
+        appState.calcHSQ.pres = numVal;
+        const s = document.getElementById('inputHsqPres');
+        const n = document.getElementById('numHsqPres');
+        const l = document.getElementById('labelValHsqPres');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      } else if (field === 'oral') {
+        appState.calcHSQ.oral = numVal;
+        const s = document.getElementById('inputHsqOral');
+        const n = document.getElementById('numHsqOral');
+        const l = document.getElementById('labelValHsqOral');
+        if (s) s.value = numVal;
+        if (n) n.value = numVal;
+        if (l) l.textContent = `${numVal} Punkte`;
+      }
+
+      updateCalculator();
+      persistState();
+    }
+
+    function syncErgInput(val) {
+      const numVal = Math.min(100, Math.max(0, parseInt(val, 10) || 0));
+      appState.calcWBQ.ergOral = numVal;
+      const s = document.getElementById('inputErgOral');
+      const n = document.getElementById('numErgOral');
+      const l = document.getElementById('labelValErgOral');
+      if (s) s.value = numVal;
+      if (n) n.value = numVal;
+      if (l) l.textContent = `${numVal} Punkte`;
+
+      updateCalculator();
+      persistState();
+    }
+
+    function updateCalculator() {
+      const { vwl, rewe, recht, uf, ergOral } = appState.calcWBQ;
+      const { sa1, sa2, pres, oral } = appState.calcHSQ;
+
+      // 1. WBQ EVALUATION
+      const wbqSubjects = [
+        { name: 'Volks- und Betriebswirtschaft', pts: vwl, key: 'vwl' },
+        { name: 'Rechnungswesen', pts: rewe, key: 'rewe' },
+        { name: 'Recht und Steuern', pts: recht, key: 'recht' },
+        { name: 'Unternehmensführung', pts: uf, key: 'uf' }
+      ];
+
+      const under30 = wbqSubjects.filter(s => s.pts < 30);
+      const between30and49 = wbqSubjects.filter(s => s.pts >= 30 && s.pts < 50);
+      const passedSubjects = wbqSubjects.filter(s => s.pts >= 50);
+
+      const ergBox = document.getElementById('ergBox');
+      const ergOutcome = document.getElementById('ergResultOutcome');
+      const wbqStatusBox = document.getElementById('wbqStatusBox');
+
+      let wbqFinalPts = Math.round((vwl + rewe + recht + uf) / 4);
+      let wbqPassed = false;
+      let ergEligible = false;
+      let ergSubject = null;
+
+      if (under30.length === 0 && between30and49.length === 1) {
+        ergEligible = true;
+        ergSubject = between30and49[0];
+      }
+
+      if (passedSubjects.length === 4) {
+        wbqPassed = true;
+        if (ergBox) ergBox.style.display = 'none';
+      } else if (ergEligible) {
+        if (ergBox) ergBox.style.display = 'block';
+
+        // Oral Ergänzungsprüfung calculation: (2 * schriftlich + mündlich) / 3
+        const combinedSubjectPts = Math.round((2 * ergSubject.pts + ergOral) / 3);
+        const minOralNeeded = Math.max(0, Math.ceil((150 - 2 * ergSubject.pts)));
+
+        if (combinedSubjectPts >= 50) {
+          wbqPassed = true;
+          // Calculate adjusted WBQ average
+          const adjustedPtsSum = wbqSubjects.reduce((sum, s) => {
+            return sum + (s.key === ergSubject.key ? combinedSubjectPts : s.pts);
+          }, 0);
+          wbqFinalPts = Math.round(adjustedPtsSum / 4);
+
+          if (ergOutcome) {
+            ergOutcome.innerHTML = `
+              <span style="color: var(--positive);">
+                <i class="ph-bold ph-check-circle" aria-hidden="true"></i> Bestanden!
+              </span>
+              Im Fach <em>${ergSubject.name}</em> erreichen Sie mit ${ergOral} mündlichen Punkten rechnerisch <strong>${combinedSubjectPts} Punkte</strong> (mind. 50 benötigt). Mindestpunktzahl mündlich war: ${minOralNeeded} Pkt.
+            `;
+          }
+        } else {
+          wbqPassed = false;
+          if (ergOutcome) {
+            ergOutcome.innerHTML = `
+              <span style="color: var(--error);">
+                <i class="ph-bold ph-x-circle" aria-hidden="true"></i> Nicht bestanden!
+              </span>
+              Mit ${ergOral} Punkten erreichen Sie nur <strong>${combinedSubjectPts} Punkte</strong> in <em>${ergSubject.name}</em> (mind. 50 benötigt). Sie benötigen mindestens <strong>${minOralNeeded} Punkte</strong> in der mündlichen Ergänzungsprüfung!
+            `;
+          }
+        }
+      } else {
+        wbqPassed = false;
+        if (ergBox) ergBox.style.display = 'none';
+      }
+
+      // Render WBQ Status
+      if (wbqStatusBox) {
+        let statusBadge = '';
+        let statusDesc = '';
+
+        if (wbqPassed) {
+          statusBadge = `<span class="badge badge-success"><i class="ph-bold ph-check" aria-hidden="true"></i> WBQ BESTANDEN</span>`;
+          statusDesc = `Schnitt der WBQ: <strong>${wbqFinalPts} Punkte</strong> (Note ${getPunkteNoteText(wbqFinalPts)}). Zulassung zur mündlichen HSQ-Prüfung nach Absolvierung der schriftlichen HSQ möglich.`;
+        } else if (ergEligible) {
+          statusBadge = `<span class="badge" style="background-color: var(--warning-container); color: var(--on-warning-container); border-color: var(--warning);"><i class="ph-bold ph-warning" aria-hidden="true"></i> ERGÄNZUNGSPRÜFUNG</span>`;
+          statusDesc = `Mangelhafte Leistung im Fach <em>${ergSubject.name}</em> (${ergSubject.pts} Pkt.). Bestehen über die mündliche Ergänzungsprüfung möglich!`;
+        } else if (under30.length > 0) {
+          statusBadge = `<span class="badge" style="background-color: #fce8e6; color: var(--error); border-color: var(--error);"><i class="ph-bold ph-x-circle" aria-hidden="true"></i> NICHT BESTANDEN</span>`;
+          statusDesc = `Ungenügende Leistung (&lt; 30 Punkte) in: ${under30.map(s => s.name + ' (' + s.pts + ' Pkt.)').join(', ')}. Keine Ergänzungsprüfung zulässig. Schriftliche Wiederholungsprüfung erforderlich.`;
+        } else {
+          statusBadge = `<span class="badge" style="background-color: #fce8e6; color: var(--error); border-color: var(--error);"><i class="ph-bold ph-x-circle" aria-hidden="true"></i> NICHT BESTANDEN</span>`;
+          statusDesc = `Mehr als ein Fach mangelhaft (${between30and49.map(s => s.name).join(', ')}). Keine Ergänzungsprüfung zulässig. Die nicht bestandenen Fächer müssen schriftlich wiederholt werden.`;
+        }
+
+        wbqStatusBox.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span class="label-caps">WBQ Gesamtergebnis</span>
+            ${statusBadge}
+          </div>
+          <div style="font-size: 0.9rem;">${statusDesc}</div>
+        `;
+      }
+
+      // 2. HSQ EVALUATION
+      const hsqWrittenAvg = Math.round((sa1 + sa2) / 2);
+      const hsqWrittenPassed = (hsqWrittenAvg >= 50);
+
+      // Oral evaluation: 1/3 presentation + 2/3 fachgespräch
+      const hsqOralAvg = Math.round((1 * pres + 2 * oral) / 3);
+      const hsqOralPassed = (hsqOralAvg >= 50);
+
+      const hsqOverallPassed = wbqPassed && hsqWrittenPassed && hsqOralPassed;
+
+      // Final Total Composite: WBQ (25%) + HSQ Written (50%) + HSQ Oral (25%)
+      const finalCompositeScore = Math.round((wbqFinalPts * 0.25) + (hsqWrittenAvg * 0.50) + (hsqOralAvg * 0.25));
+      const finalNote = getIhkNote(finalCompositeScore);
+
+      const hsqFinalStatusBox = document.getElementById('hsqFinalStatusBox');
+      if (hsqFinalStatusBox) {
+        hsqFinalStatusBox.innerHTML = `
+          <div class="calc-score-display">
+            <div>
+              <strong>HSQ Schriftlich (50% Gesamtnote)</strong>
+              <div style="font-size: 0.8rem; color: var(--on-surface-variant);">Mittelwert SA 1 (${sa1}) & SA 2 (${sa2})</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 1.15rem; font-weight: 800; color: ${hsqWrittenPassed ? 'var(--positive)' : 'var(--error)'};">
+                ${hsqWrittenAvg} Punkte
+              </span>
+              <div style="font-size: 0.75rem; font-weight: 700;">${hsqWrittenPassed ? 'Bestanden (≥ 50)' : 'Nicht bestanden (&lt; 50)'}</div>
+            </div>
+          </div>
+
+          <div class="calc-score-display">
+            <div>
+              <strong>HSQ Mündlich (25% Gesamtnote)</strong>
+              <div style="font-size: 0.8rem; color: var(--on-surface-variant);">1/3 Präsentation (${pres}) + 2/3 Gespräch (${oral})</div>
+            </div>
+            <div style="text-align: right;">
+              <span style="font-size: 1.15rem; font-weight: 800; color: ${hsqOralPassed ? 'var(--positive)' : 'var(--error)'};">
+                ${hsqOralAvg} Punkte
+              </span>
+              <div style="font-size: 0.75rem; font-weight: 700;">${hsqOralPassed ? 'Bestanden (≥ 50)' : 'Nicht bestanden (&lt; 50)'}</div>
+            </div>
+          </div>
+
+          <div style="margin-top: var(--space-md); padding-top: var(--space-sm); border-top: 2px solid var(--outline); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-sm);">
+            <div>
+              <span class="label-caps">IHK-Gesamtergebnis</span>
+              <h3 style="color: var(--primary); font-size: 1.25rem;">
+                ${hsqOverallPassed ? 'Geprüfter Wirtschaftsfachwirt' : 'Prüfung noch unvollständig / offen'}
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--on-surface-variant);">
+                Gesamtpunkte: <strong>${finalCompositeScore} von 100</strong> (Gewichtet)
+              </p>
+            </div>
+            <div class="grade-badge-huge" style="background-color: ${hsqOverallPassed ? 'var(--primary)' : 'var(--outline-variant)'};">
+              <span>${hsqOverallPassed ? finalNote.note : '—'}</span>
+              <small>${hsqOverallPassed ? finalNote.text : 'Offen'}</small>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function getIhkNote(pts) {
+      if (pts >= 92) return { note: '1,0', text: 'Sehr gut' };
+      if (pts >= 81) return { note: '2,0', text: 'Gut' };
+      if (pts >= 67) return { note: '3,0', text: 'Befriedigend' };
+      if (pts >= 50) return { note: '4,0', text: 'Ausreichend' };
+      if (pts >= 30) return { note: '5,0', text: 'Mangelhaft' };
+      return { note: '6,0', text: 'Ungenügend' };
+    }
+
+    function getPunkteNoteText(pts) {
+      const n = getIhkNote(pts);
+      return `${n.note} (${n.text})`;
+    }
+
+    function loadCalcPreset(type) {
+      if (type === 'pass_good') {
+        syncCalcInput('vwl', 82);
+        syncCalcInput('rewe', 76);
+        syncCalcInput('recht', 80);
+        syncCalcInput('uf', 85);
+        syncCalcInput('sa1', 78);
+        syncCalcInput('sa2', 81);
+        syncCalcInput('pres', 85);
+        syncCalcInput('oral', 88);
+      } else if (type === 'erg_needed') {
+        syncCalcInput('vwl', 65);
+        syncCalcInput('rewe', 42); // Mangelhaft -> Ergänzung
+        syncCalcInput('recht', 68);
+        syncCalcInput('uf', 72);
+        syncCalcInput('sa1', 70);
+        syncCalcInput('sa2', 65);
+        syncCalcInput('pres', 75);
+        syncCalcInput('oral', 78);
+        syncErgInput(68);
+      } else if (type === 'failed_double') {
+        syncCalcInput('vwl', 45); // 1. Mangelhaft
+        syncCalcInput('rewe', 40); // 2. Mangelhaft -> Keine Ergänzung!
+        syncCalcInput('recht', 60);
+        syncCalcInput('uf', 62);
+        syncCalcInput('sa1', 48);
+        syncCalcInput('sa2', 45);
+        syncCalcInput('pres', 60);
+        syncCalcInput('oral', 60);
+      }
+    }
+
+    /* ==========================================================================
+       CHECKLIST MODULE
+       ========================================================================== */
+    function renderChecklist() {
+      const container = document.getElementById('checklistItemsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let doneCount = 0;
+
+      CHECKLIST_DATA.forEach(item => {
+        const isDone = !!appState.checklistDone[item.id];
+        if (isDone) doneCount++;
+
+        const div = document.createElement('div');
+        div.className = `checklist-item ${isDone ? 'done' : ''}`;
+        div.id = `checklist-row-${item.id}`;
+
+        div.innerHTML = `
+          <label for="chk-item-${item.id}" style="display:none;">${item.title}</label>
+          <input type="checkbox" id="chk-item-${item.id}" class="checklist-check" ${isDone ? 'checked' : ''} onchange="toggleChecklistItem(${item.id}, this.checked)">
+          <div class="checklist-text">
+            <h4>${item.title}</h4>
+            <p>${item.desc}</p>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      updateChecklistProgress(doneCount);
+    }
+
+    function toggleChecklistItem(id, isChecked) {
+      if (isChecked) {
+        appState.checklistDone[id] = true;
+      } else {
+        delete appState.checklistDone[id];
+      }
+
+      const row = document.getElementById(`checklist-row-${id}`);
+      if (row) {
+        if (isChecked) {
+          row.classList.add('done');
+        } else {
+          row.classList.remove('done');
+        }
+      }
+
+      const doneCount = Object.keys(appState.checklistDone).length;
+      updateChecklistProgress(doneCount);
+      persistState();
+    }
+
+    function toggleAllChecklist(setDone) {
+      if (setDone) {
+        CHECKLIST_DATA.forEach(item => {
+          appState.checklistDone[item.id] = true;
+        });
+      } else {
+        appState.checklistDone = {};
+      }
+      renderChecklist();
+      persistState();
+    }
+
+    function updateChecklistProgress(doneCount) {
+      const total = CHECKLIST_DATA.length;
+      const pct = Math.round((doneCount / total) * 100);
+
+      const pText = document.getElementById('checklistProgressText');
+      const pBar = document.getElementById('checklistProgressBar');
+
+      if (pText) pText.textContent = `${doneCount} von ${total} Meilensteinen erledigt (${pct}%)`;
+      if (pBar) pBar.style.width = `${pct}%`;
+    }
+
+    /* ==========================================================================
+       GLOBAL STUDY PROGRESS TRACKER
+       ========================================================================== */
+    function updateGlobalProgress() {
+      let totalTopics = 0;
+      CURRICULUM_DATA.forEach(s => {
+        totalTopics += s.topics.length;
+      });
+
+      const doneTopicsCount = Object.keys(appState.completedTopics).length;
+      const pct = totalTopics > 0 ? Math.round((doneTopicsCount / totalTopics) * 100) : 0;
+
+      const fill = document.getElementById('globalProgressBar');
+      const textPct = document.getElementById('globalProgressPct');
+      const textDetail = document.getElementById('progressDetailText');
+
+      if (fill) fill.style.width = `${pct}%`;
+      if (textPct) textPct.textContent = `${pct}%`;
+      if (textDetail) textDetail.textContent = `${doneTopicsCount} von ${totalTopics} Rahmenplan-Themen beherrscht`;
+    }
+
+    /* ==========================================================================
+       EXPORT REPORT VIA TRIGGER FILE DOWNLOAD
+       ========================================================================== */
+    function exportStudyStatus() {
+      const doneTopics = Object.keys(appState.completedTopics);
+      const checklistDone = Object.keys(appState.checklistDone);
+
+      const report = [
+        '====================================================================',
+        'IHK WIRTSCHAFTSFACHWIRT — PERSÖNLICHER LERN- & PRÜFUNGSSTATUS',
+        'Generiert über die interaktive Lernplattform',
+        '====================================================================\n',
+        `Datum: ${new Date().toLocaleDateString('de-DE')}`,
+        `Rahmenplan-Fortschritt: ${doneTopics.length} von 40 Themen gemeistert`,
+        `Checklisten-Fortschritt: ${checklistDone.length} von 12 Meilensteinen abgehakt\n`,
+        '1. SIMULIERTE NOTEN:',
+        `   - WBQ VWL/BWL: ${appState.calcWBQ.vwl} Punkte`,
+        `   - WBQ Rechnungswesen: ${appState.calcWBQ.rewe} Punkte`,
+        `   - WBQ Recht und Steuern: ${appState.calcWBQ.recht} Punkte`,
+        `   - WBQ Unternehmensführung: ${appState.calcWBQ.uf} Punkte`,
+        `   - HSQ Situationsaufgabe 1: ${appState.calcHSQ.sa1} Punkte`,
+        `   - HSQ Situationsaufgabe 2: ${appState.calcHSQ.sa2} Punkte`,
+        `   - HSQ Mündl. Präsentation: ${appState.calcHSQ.pres} Punkte`,
+        `   - HSQ Mündl. Fachgespräch: ${appState.calcHSQ.oral} Punkte\n`,
+        '2. GEMEISTERTE RAHMENPLAN-THEMEN:',
+        doneTopics.length > 0 ? doneTopics.map(id => `   [X] Lernfeld ${id}`).join('\n') : '   (Noch keine Themen als erledigt markiert)',
+        '\n3. ERLEDIGTE PRÜFUNGS-MEILENSTEINE:',
+        checklistDone.length > 0 ? checklistDone.map(id => `   [X] ${CHECKLIST_DATA[id].title}`).join('\n') : '   (Noch keine Meilensteine als erledigt markiert)',
+        '\n====================================================================',
+        'Viel Erfolg bei Ihrer IHK-Prüfung!'
+      ].join('\n');
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.triggerFileDownload === 'function') {
+        window.notebookAppApi.triggerFileDownload({
+          content: report,
+          contentType: 'text/plain;charset=utf-8',
+          encoding: 'utf-8',
+          filename: 'WFW_Pruefungsstatus.txt'
+        });
+      } else {
+        // Fallback for direct browser testing
+        const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'WFW_Pruefungsstatus.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    }
+  </script>
+</body>
+</html>
